@@ -32,6 +32,7 @@ export function registerTokens(program: Command): void {
         const model = opts.model ?? ctx.loaded.config.defaultModel ?? undefined;
         const result = await discoverFor(ctx);
         const registry = new TokenizerRegistry();
+        let sendsContent = false;
         if (opts.allowExternal) {
           if (!model || !isAnthropicModel(model)) {
             ctx.out.warn("--allow-external only affects Anthropic models; counting locally.");
@@ -44,12 +45,18 @@ export function registerTokens(program: Command): void {
               files: result.files.map((f) => ({ path: f.path, tokens: estimateTokens(f.file.text) })),
             });
             registry.register(new AnthropicApiCounter(key));
+            sendsContent = true;
           }
         }
         const counter = createCounter(ctx, model, registry);
         const rows: { path: string; result: TokenCountResult }[] = [];
+        // Local counts use the text as written, so they match scan and audit. Redaction applies only
+        // to content that is sent to a provider (I5); that count is of the redacted text.
         for (const f of result.files)
-          rows.push({ path: f.path, result: await counter.count(redact(f.file.text)) });
+          rows.push({
+            path: f.path,
+            result: await counter.count(sendsContent ? redact(f.file.text) : f.file.text),
+          });
         const total = rows.reduce((s, r) => s + r.result.inputTokens, 0);
         const methods = [...new Set(rows.map((r) => r.result.method))];
         const warnings = [...new Set(rows.flatMap((r) => r.result.warnings ?? []))];

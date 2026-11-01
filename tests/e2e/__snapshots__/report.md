@@ -1,6 +1,6 @@
 # TokenWise report
 
-Generated 2026-10-30T09:12:00.000Z by tokenwise 0.1.0 for `.`.
+Generated 2026-10-30T09:12:00.000Z by tokenwise 0.1.1 for `.`.
 
 ## Summary
 

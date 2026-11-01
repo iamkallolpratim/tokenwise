@@ -2,6 +2,16 @@ import { ExitCode, redact, TokenwiseError } from "@tokenwise/shared";
 import { CommanderError } from "commander";
 import { buildProgram } from "./program.ts";
 
+// A reader that closes early (`tokenwise audit | head`) is not an error. Stop writing to that
+// stream but let the command finish, so an `--apply` run completes instead of stopping halfway
+// through its output.
+for (const stream of [process.stdout, process.stderr]) {
+  stream.on("error", (err: NodeJS.ErrnoException) => {
+    if (err.code === "EPIPE" || err.code === "ERR_STREAM_DESTROYED") return;
+    throw err;
+  });
+}
+
 async function main(): Promise<number> {
   const program = buildProgram();
   try {

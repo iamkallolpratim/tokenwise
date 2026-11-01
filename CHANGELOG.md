@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.1.1 (unreleased)
+
+Fixes found by testing the published 0.1.0 package end to end.
+
+- `tokenwise tokens` counted files after redacting secrets, so a file containing a secret was undercounted and the total disagreed with `scan`, `audit` and `benchmark`. Local counts now use the text as written; redaction still applies to anything sent to a provider.
+- Piping output into a reader that stops early (`tokenwise optimize --apply | head`) crashed with an unhandled `EPIPE` error and stopped before writing. TokenWise now stops writing to the closed stream and finishes the command; `--apply` completes and exits 0.
+
 ## 0.1.0 (2026-11-01)
 
 First release, published as `@klawde91/tokenwise` (command: `tokenwise`).

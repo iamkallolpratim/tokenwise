@@ -1,6 +1,6 @@
 {
   "name": "@klawde91/tokenwise",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Find and reduce unnecessary LLM token usage in prompts, agent instructions, skills, and tool schemas \u2014 without degrading behavior.",
   "license": "MIT",
   "homepage": "https://iamkallolpratim.github.io/tokenwise/",

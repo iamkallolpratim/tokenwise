@@ -3,7 +3,7 @@
   "generatedAt": "2026-10-30T09:12:00.000Z",
   "tool": {
     "name": "tokenwise",
-    "version": "0.1.0"
+    "version": "0.1.1"
   },
   "repository": {
     "target": ".",

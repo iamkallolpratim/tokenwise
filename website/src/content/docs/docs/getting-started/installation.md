@@ -48,7 +48,7 @@ To get a `tokenwise` command from your checkout, pack it and install the tarball
 ```bash
 cd apps/cli
 pnpm pack
-npm install -g ./klawde91-tokenwise-0.1.0.tgz
+npm install -g ./klawde91-tokenwise-*.tgz
 tokenwise --version
 ```
 

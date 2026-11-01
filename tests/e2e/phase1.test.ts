@@ -1,7 +1,7 @@
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import path from "node:path";
 import { describe, expect, it } from "vitest";
-import { run, sampleCopy, tempDir } from "../helpers/cli.ts";
+import { REPO_ROOT, run, sampleCopy, tempDir } from "../helpers/cli.ts";
 
 const json = (s: string) => JSON.parse(s);
 
@@ -194,7 +194,8 @@ describe("exit codes and output purity", () => {
   });
   it("--help and --version → 0", () => {
     expect(run(["--help"], { cwd: tempDir() }).code).toBe(0);
-    expect(run(["--version"], { cwd: tempDir() }).stdout.trim()).toBe("0.1.0");
+    const pkg = JSON.parse(readFileSync(path.join(REPO_ROOT, "apps", "cli", "package.json"), "utf8"));
+    expect(run(["--version"], { cwd: tempDir() }).stdout.trim()).toBe(pkg.version);
   });
   it("--format json stdout parses as JSON even with warnings", () => {
     for (const cmd of [["scan"], ["tokens"], ["config", "show"]]) {
