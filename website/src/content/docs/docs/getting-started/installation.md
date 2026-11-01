@@ -7,10 +7,6 @@ After reading this page you will have a working `tokenwise` command.
 
 TokenWise needs **Node.js 26 or newer**. It needs no API key and no account.
 
-:::caution[Pre-release]
-TokenWise 0.1.0 is not published to npm yet, so the `npx` and `npm install` commands below will not work until the first release. Until then, [run it from source](#from-source).
-:::
-
 ## With npx
 
 Runs the latest version without installing anything:
@@ -37,10 +33,10 @@ npm install -D @klawde91/tokenwise
 
 ## From source
 
-Requires pnpm 9.
+For contributors, or to try unreleased changes. Requires pnpm 9.
 
 ```bash
-git clone <repository URL> tokenwise
+git clone https://github.com/iamkallolpratim/tokenwise.git
 cd tokenwise
 pnpm install
 pnpm build

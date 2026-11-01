@@ -37,4 +37,4 @@ Removing an exact duplicate is safe by construction, but TokenWise cannot know w
 
 ## Platforms
 
-The test suite passes on macOS and Linux with Node.js 26. Windows is part of the CI matrix but has not been run yet.
+The test suite runs in CI on Linux, macOS and Windows with Node.js 26. Other Node.js versions are not supported (`engines: >=26`).

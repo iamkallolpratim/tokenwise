@@ -12,12 +12,7 @@ Requires Node.js 26 or newer. No API key, no account.
 npx @klawde91/tokenwise --help
 ```
 
-`@klawde91/tokenwise` is not published to npm yet. Until the first release, run it from source:
-
-```bash
-pnpm install && pnpm build
-node apps/cli/dist/index.js --help
-```
+Or install it: `npm install -g @klawde91/tokenwise` gives you a `tokenwise` command.
 
 ## Quickstart
 

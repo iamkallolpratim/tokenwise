@@ -6,7 +6,7 @@ export const VERSION: string = cliPackage.version;
 /** The command every example uses. */
 export const NPX = `npx ${PACKAGE_NAME}`;
 /**
- * Flip to true after the first npm release. While false, the site says the package is not on npm
- * yet and shows how to run from source.
+ * true since 0.1.0 was published (2026-11-01). While false, the site says the package is not on
+ * npm yet and shows how to run from source.
  */
-export const PUBLISHED_ON_NPM = false;
+export const PUBLISHED_ON_NPM = true;

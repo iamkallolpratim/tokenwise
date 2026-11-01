@@ -1,8 +1,8 @@
 # Changelog
 
-## 0.1.0 (unreleased)
+## 0.1.0 (2026-11-01)
 
-First release candidate. Not published. Package name: `@klawde91/tokenwise` (command: `tokenwise`).
+First release, published as `@klawde91/tokenwise` (command: `tokenwise`).
 
 - CLI: `init`, `config`, `scan`, `tokens`, `audit`, `optimize` (deterministic and opt-in AI mode), `restore`, `benchmark` (baselines, eval suites), `report` (JSON, Markdown, HTML), `install-skill`.
 - 25 rules: RED-001..005, FMT-001, VERB-001..002, CTX-001..003, SEC-001..002, TOOL-001..004, RAG-001..004, LOOP-001..003, CACHE-001.

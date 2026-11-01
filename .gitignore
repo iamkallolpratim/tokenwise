@@ -9,3 +9,6 @@ apps/cli/skills/
 apps/cli/README.md
 apps/cli/LICENSE
 .tokenwise/usage.json
+
+# Tarballs from `pnpm pack`
+*.tgz
