@@ -1,6 +1,6 @@
 ---
 import StarlightPage from "@astrojs/starlight/components/StarlightPage.astro";
-import { REPO_URL } from "../../site.config.mjs";
+import { REPO_BRANCH, REPO_URL } from "../../site.config.mjs";
 import CopyCommand from "../components/CopyCommand.astro";
 import TabPanel from "../components/TabPanel.astro";
 import Tabs from "../components/Tabs.astro";
@@ -209,7 +209,7 @@ const guarantees = [
       <nav aria-label="Footer">
         <a href={docs()}>Docs</a>
         {REPO_URL && <a href={REPO_URL}>GitHub</a>}
-        {REPO_URL ? <a href={`${REPO_URL}/blob/main/LICENSE`}>MIT License</a> : <span>MIT License</span>}
+        {REPO_URL ? <a href={`${REPO_URL}/blob/${REPO_BRANCH}/LICENSE`}>MIT License</a> : <span>MIT License</span>}
         <a href={docs("privacy/")}>Privacy</a>
         <a href={docs("changelog/")}>Changelog</a>
       </nav>

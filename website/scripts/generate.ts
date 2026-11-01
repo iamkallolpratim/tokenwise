@@ -29,8 +29,10 @@ const NOTE = (source: string) =>
 const esc = (s: string) => s.replace(/\|/g, "\\|").replace(/\n/g, " ");
 const code = (s: string) => `\`${s.replace(/`/g, "\\`")}\``;
 
+// Generated pages are gitignored, so an "Edit page" link would point at a file that is not in the
+// repository; editUrl: false removes it.
 function page(title: string, description: string, body: string): string {
-  return `---\ntitle: ${JSON.stringify(title)}\ndescription: ${JSON.stringify(description)}\n---\n\n${body.trimEnd()}\n`;
+  return `---\ntitle: ${JSON.stringify(title)}\ndescription: ${JSON.stringify(description)}\neditUrl: false\n---\n\n${body.trimEnd()}\n`;
 }
 
 async function write(file: string, content: string): Promise<void> {

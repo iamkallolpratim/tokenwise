@@ -5,11 +5,13 @@
 //   pages     one <h1>, a <title>, a meta description and a canonical URL per page
 //   privacy   no third-party scripts, styles, fonts, frames or images; no analytics or cookies
 //   budget    JavaScript loaded by the landing page stays under 100 KB
+//   repo      links into REPO_URL name REPO_BRANCH and a file that is committed (not gitignored)
 // Pass --external to also check external links (network; failures from flaky hosts only warn).
+import { spawnSync } from "node:child_process";
 import { existsSync, promises as fs, readFileSync, statSync } from "node:fs";
 import path from "node:path";
-import { BASE_PATH, SITE_URL } from "../site.config.mjs";
-import { WEBSITE } from "./lib/paths.ts";
+import { BASE_PATH, REPO_BRANCH, REPO_URL, SITE_URL } from "../site.config.mjs";
+import { REPO, WEBSITE } from "./lib/paths.ts";
 
 const DIST = path.join(WEBSITE, "dist");
 const JS_BUDGET = 100 * 1024;
@@ -178,6 +180,27 @@ for (const m of landing.matchAll(/<script\b(?![^>]*\ssrc=)[^>]*>([\s\S]*?)<\/scr
     addScript(new URL(i[1] ?? "", SITE_URL + BASE_PATH).pathname);
 if (jsBytes > JS_BUDGET)
   fail("budget", `landing page loads ${(jsBytes / 1024).toFixed(1)} KB of JavaScript (budget 100 KB)`);
+
+// ---------------------------------------------------------------- links into the repository
+// Checked locally, without the network: a link to another branch, or to a generated (gitignored)
+// file, is a 404 on GitHub.
+if (REPO_URL) {
+  const hasGit = existsSync(path.join(REPO, ".git"));
+  for (const href of external) {
+    if (!href.startsWith(`${REPO_URL}/`)) continue;
+    const m = href.slice(REPO_URL.length).match(/^\/(blob|edit|tree|raw)\/([^/]+)\/(.+)$/);
+    if (!m) continue;
+    const [, , branch, file = ""] = m;
+    if (branch !== REPO_BRANCH) {
+      fail("repo", `${href} names branch "${branch}", but REPO_BRANCH is "${REPO_BRANCH}"`);
+      continue;
+    }
+    const rel = decodeURIComponent(file);
+    if (!existsSync(path.join(REPO, ...rel.split("/")))) fail("repo", `${href}: ${rel} does not exist`);
+    else if (hasGit && spawnSync("git", ["check-ignore", "-q", rel], { cwd: REPO }).status === 0)
+      fail("repo", `${href}: ${rel} is gitignored, so it is not on GitHub`);
+  }
+}
 
 // ---------------------------------------------------------------- external links (optional)
 if (process.argv.includes("--external")) {
