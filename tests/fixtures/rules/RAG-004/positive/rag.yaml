@@ -1,0 +1,5 @@
+chunk_size: 1000
+chunk_overlap: 500
+top_k: 5
+rerank: true
+filters: {a: b}

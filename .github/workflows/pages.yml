@@ -1,0 +1,80 @@
+name: pages
+
+# Builds the website on every pull request (no deploy) and deploys it to GitHub Pages from the
+# default branch. One-time setup: Settings → Pages → Source: "GitHub Actions" (see website/README.md).
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pages-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+env:
+  ASTRO_TELEMETRY_DISABLED: "1"
+  REPO_URL: ${{ github.server_url }}/${{ github.repository }}
+  REPO_BRANCH: ${{ github.event.repository.default_branch }}
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: pnpm/action-setup@v6
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 26
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+
+      # SITE_URL and BASE_PATH are decided here and nowhere else. On the default branch they come
+      # from the repository's Pages settings (project site, user/org site or custom domain).
+      # Pull requests build under a non-root base path, where broken links show up.
+      - name: Read Pages URL
+        id: pages
+        if: github.event_name != 'pull_request'
+        uses: actions/configure-pages@v6
+      - name: Set site URL
+        run: |
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            echo "SITE_URL=https://example.github.io" >> "$GITHUB_ENV"
+            echo "BASE_PATH=/tokenwise/" >> "$GITHUB_ENV"
+          else
+            echo "SITE_URL=${{ steps.pages.outputs.origin }}" >> "$GITHUB_ENV"
+            echo "BASE_PATH=${{ steps.pages.outputs.base_path }}/" >> "$GITHUB_ENV"
+          fi
+
+      - name: Build the CLI (the generators and demo capture use it)
+        run: pnpm build
+      - name: Generate reference pages, capture demo output, build the site
+        run: pnpm --filter website build
+      - name: Docs accuracy, links, privacy and size checks
+        run: pnpm --filter website check
+      - name: External links (flaky hosts only warn)
+        run: pnpm --filter website check:external
+      - name: Lighthouse (performance, accessibility, best practices, SEO ≥ 0.95)
+        run: pnpm --filter website lighthouse
+
+      - uses: actions/upload-pages-artifact@v5
+        if: github.event_name != 'pull_request'
+        with:
+          path: website/dist
+
+  deploy:
+    if: github.event_name != 'pull_request'
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v5

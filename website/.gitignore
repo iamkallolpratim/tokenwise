@@ -1,0 +1,14 @@
+dist/
+.astro/
+# Generated before every build (website/scripts/generate.ts, capture-demo.ts)
+src/content/docs/docs/reference/cli.md
+src/content/docs/docs/reference/rules.md
+src/content/docs/docs/reference/config-schema.md
+src/content/docs/docs/reference/report-format.md
+src/content/docs/docs/changelog.md
+src/data/generated/
+src/data/demo/
+public/schemas/
+public/demo/
+.lighthouseci/
+.lighthouserc.json

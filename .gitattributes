@@ -1,0 +1,4 @@
+# Keep LF on every OS so golden snapshots and fixture token counts match in CI (Windows included).
+# CRLF behavior is tested with files generated at test time.
+* text=auto eol=lf
+*.png binary

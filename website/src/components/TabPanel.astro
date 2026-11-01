@@ -1,0 +1,11 @@
+---
+interface Props {
+  id: string;
+  index: number;
+}
+const { id, index } = Astro.props;
+---
+
+<div role="tabpanel" id={`${id}-panel-${index}`} aria-labelledby={`${id}-tab-${index}`} tabindex="-1">
+  <slot />
+</div>

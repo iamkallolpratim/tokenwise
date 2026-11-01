@@ -1,0 +1,455 @@
+---
+import StarlightPage from "@astrojs/starlight/components/StarlightPage.astro";
+import { REPO_URL } from "../../site.config.mjs";
+import CopyCommand from "../components/CopyCommand.astro";
+import TabPanel from "../components/TabPanel.astro";
+import Tabs from "../components/Tabs.astro";
+import Terminal from "../components/Terminal.astro";
+import demo from "../data/demo/demo.json";
+import { NPX, PACKAGE_NAME, PUBLISHED_ON_NPM } from "../data/release.ts";
+
+const base = import.meta.env.BASE_URL;
+// Card text is plain strings; `backticks` become <code>. Everything else is escaped.
+const inline = (t: string) =>
+  t
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/`([^`]+)`/g, "<code>$1</code>");
+const docs = (p = "") => `${base}docs/${p}`;
+const caption = `Output from the bundled sample project (${demo.source}), captured from tokenwise ${demo.version} when this site was built.`;
+
+const steps = [
+  {
+    title: "Scan",
+    command: "tokenwise scan",
+    text: "Finds the files agents actually read (`CLAUDE.md`, `AGENTS.md`, skills, subagents, prompts, tool schemas, RAG config) and counts their tokens.",
+  },
+  {
+    title: "Audit",
+    command: "tokenwise audit",
+    text: "Runs 25 rules and reports each finding with its location, risk, recommendation and estimated savings.",
+  },
+  {
+    title: "Optimize",
+    command: "tokenwise optimize",
+    text: "Shows a diff of the safe, deterministic fixes. Nothing is written until you add `--apply`, which backs up every file first.",
+  },
+  {
+    title: "Measure",
+    command: "tokenwise benchmark",
+    text: "Compares against a saved baseline and writes a JSON, Markdown or HTML report with every number labeled.",
+  },
+];
+
+const guarantees = [
+  {
+    title: "Local-first, no telemetry",
+    text: "Nothing leaves your machine unless config allows it, you pass `--allow-external`, and you confirm. The test suite fails if any command opens a network connection without that.",
+  },
+  {
+    title: "Nothing changes without `--apply`",
+    text: "`optimize` is a dry run by default. `--apply` backs up every file, writes atomically, and `tokenwise restore` puts the original bytes back.",
+  },
+  {
+    title: "Protected content is checked",
+    text: "Negations, security and approval rules, identifiers, paths, URLs and code are extracted before a fix and verified after it. If one would be lost, the whole file is rejected.",
+  },
+  {
+    title: "Every number is labeled",
+    text: "Token counts say `exact`, `provider_api` or `estimated`. Savings say `measured`, `estimated` or `potential`. Unknown values print as `n/a`.",
+  },
+  {
+    title: "Quality is not assumed",
+    text: "Results say \"Quality: not verified\" until you run an evaluation suite. Fixes that need judgment are reported as recommendations, never applied.",
+  },
+];
+---
+
+<StarlightPage
+  frontmatter={{
+    title: "Reduce token waste. Preserve intelligence.",
+    description:
+      "TokenWise is a local-first CLI that finds unnecessary LLM tokens in CLAUDE.md, AGENTS.md, skills, prompts and tool schemas, and removes only what is safe to remove.",
+    template: "splash",
+  }}
+  hasSidebar={false}
+>
+  <!-- not-content opts out of Starlight's Markdown spacing rules; the landing page styles itself. -->
+  <div class="landing not-content">
+    <section class="hero" aria-labelledby="_top">
+      <div class="hero-copy">
+        <!-- id="_top" is the target of Starlight's "Skip to content" link. -->
+        <h1 id="_top">TokenWise</h1>
+        <p class="tagline">Reduce token waste. Preserve intelligence.</p>
+        <p class="lede">
+          A local-first CLI that finds unnecessary tokens in your agent instructions, skills, prompts and tool
+          schemas, shows you why each one costs you, and removes only what it can prove is safe to remove.
+        </p>
+        <CopyCommand command={`${NPX} audit .`} label="Run it on your repository" />
+        <p class="note">
+          Node.js 26 or newer. No API key, no account.
+          {!PUBLISHED_ON_NPM && (
+            <>
+              {" "}<strong>Pre-release:</strong> {PACKAGE_NAME} is not on npm yet; <a href={docs("getting-started/installation/")}>run it from source</a> until the first release.
+            </>
+          )}
+        </p>
+        <div class="actions">
+          <a class="button primary" href={docs()}>Read the docs</a>
+          {REPO_URL && <a class="button" href={REPO_URL}>View on GitHub</a>}
+        </div>
+      </div>
+      <div class="hero-demo">
+        <Terminal command={demo.audit.command} html={demo.audit.html} caption={caption} maxHeight="24rem" />
+      </div>
+    </section>
+
+    <section aria-labelledby="problem-title">
+      <h2 id="problem-title">Where the tokens go</h2>
+      <ul class="cards three">
+        <li>
+          <h3>Duplicated instructions</h3>
+          <p>The same rules repeated across CLAUDE.md, AGENTS.md, subagents and skills are paid for every time each copy is loaded.</p>
+        </li>
+        <li>
+          <h3>Oversized always-loaded context</h3>
+          <p>Root instruction files load into every session, including the logs, tables and rarely needed sections pasted into them.</p>
+        </li>
+        <li>
+          <h3>Bloated tool schemas</h3>
+          <p>Tool definitions are sent with every request, so long descriptions and embedded examples cost tokens on every call.</p>
+        </li>
+      </ul>
+    </section>
+
+    <section aria-labelledby="how-title">
+      <h2 id="how-title">How it works</h2>
+      <ol class="steps">
+        {steps.map((s, i) => (
+          <li>
+            <span class="num" aria-hidden="true">{i + 1}</span>
+            <h3>{s.title}</h3>
+            <p set:html={inline(s.text)} />
+            <code class="cmd">{s.command}</code>
+          </li>
+        ))}
+      </ol>
+      <p class="more"><a href={docs("getting-started/quickstart/")}>Walk through the quickstart</a></p>
+    </section>
+
+    <section aria-labelledby="trust-title">
+      <h2 id="trust-title">Built to be trusted</h2>
+      <p class="section-lede">These are enforced by the code and its tests, not promised in a README.</p>
+      <ul class="cards guarantees">
+        {guarantees.map((g) => (
+          <li>
+            <h3 set:html={inline(g.title)} />
+            <p set:html={inline(g.text)} />
+          </li>
+        ))}
+      </ul>
+      <p class="more"><a href={docs("concepts/safety-guarantees/")}>How each guarantee is enforced</a></p>
+    </section>
+
+    <section aria-labelledby="agents-title">
+      <h2 id="agents-title">Works with your agents</h2>
+      <p class="section-lede">
+        Skills for Claude Code and Codex teach the agent to run the CLI, explain findings with their risk, and apply
+        changes only after you approve. The analysis stays in the CLI.
+      </p>
+      <div class="cards two">
+        <div class="card">
+          <h3>Claude Code</h3>
+          <p>Installs to <code>.claude/skills/tokenwise/</code>, or <code>~/.claude/skills/</code> with <code>--scope user</code>.</p>
+          <CopyCommand command={`${NPX} install-skill --target claude --scope project --apply`} />
+          <a href={docs("agent-skills/claude-code/")}>Claude Code guide</a>
+        </div>
+        <div class="card">
+          <h3>Codex</h3>
+          <p>Installs to <code>.agents/skills/tokenwise/</code>, or <code>~/.agents/skills/</code> with <code>--scope user</code>.</p>
+          <CopyCommand command={`${NPX} install-skill --target codex --scope project --apply`} />
+          <a href={docs("agent-skills/codex/")}>Codex guide</a>
+        </div>
+      </div>
+    </section>
+
+    <section aria-labelledby="example-title">
+      <h2 id="example-title">Example output</h2>
+      <p class="section-lede">{caption}</p>
+      <Tabs id="demo" labels={["Audit", "Optimize diff", "Benchmark", "Report"]}>
+        <TabPanel id="demo" index={0}>
+          <Terminal command={demo.audit.command} html={demo.audit.html} />
+        </TabPanel>
+        <TabPanel id="demo" index={1}>
+          <Terminal command={demo.optimize.command} html={demo.optimize.html} />
+        </TabPanel>
+        <TabPanel id="demo" index={2}>
+          <Terminal command={demo.benchmark.command} html={demo.benchmark.html} />
+          <p class="small">Run after <code>benchmark --save-baseline</code> and <code>optimize --apply</code>. No evaluation suite was run, so quality is reported as not verified.</p>
+        </TabPanel>
+        <TabPanel id="demo" index={3}>
+          <Terminal command={demo.report.command} html={demo.report.text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")} />
+          <p class="small"><a href={`${base}demo/sample-report.html`}>Open the full HTML report</a> (a single self-contained file).</p>
+        </TabPanel>
+      </Tabs>
+    </section>
+
+    <section class="start" aria-labelledby="start-title">
+      <h2 id="start-title">Get started</h2>
+      <CopyCommand command={`${NPX} init`} label="Create a config and see which agent files TokenWise found" />
+      <p>
+        Requires Node.js 26 or newer.
+        {!PUBLISHED_ON_NPM && <> Not on npm yet: see <a href={docs("getting-started/installation/")}>Installation</a> to run from source.</>}
+        {" "}Then follow the <a href={docs("getting-started/quickstart/")}>quickstart</a>.
+      </p>
+    </section>
+
+    <footer class="site-footer">
+      <nav aria-label="Footer">
+        <a href={docs()}>Docs</a>
+        {REPO_URL && <a href={REPO_URL}>GitHub</a>}
+        {REPO_URL ? <a href={`${REPO_URL}/blob/main/LICENSE`}>MIT License</a> : <span>MIT License</span>}
+        <a href={docs("privacy/")}>Privacy</a>
+        <a href={docs("changelog/")}>Changelog</a>
+      </nav>
+      <p>This site uses no analytics, cookies or third-party scripts.</p>
+    </footer>
+  </div>
+</StarlightPage>
+
+<style>
+  .landing {
+    display: grid;
+    gap: 4.5rem;
+    max-width: 72rem;
+    margin: 0 auto;
+    padding-block: 1rem 2rem;
+  }
+  .landing :global(h2) {
+    font-size: var(--sl-text-3xl);
+    margin: 0 0 1rem;
+  }
+  .landing :global(h3) {
+    font-size: var(--sl-text-lg);
+    margin: 0 0 0.4rem;
+  }
+  .landing p {
+    margin: 0;
+  }
+  .landing a {
+    color: var(--sl-color-text-accent);
+  }
+  .landing a.button {
+    color: var(--sl-color-white);
+  }
+  .landing a.button.primary {
+    color: var(--sl-color-black);
+  }
+  .landing :global(code) {
+    font-family: var(--sl-font-mono);
+    font-size: 0.875em;
+    padding: 0.1em 0.35em;
+    border-radius: 0.25rem;
+    background: var(--sl-color-gray-6);
+    overflow-wrap: anywhere;
+  }
+  .landing :global(pre code),
+  .landing :global(.terminal .bar code) {
+    font-size: inherit;
+    padding: 0;
+    background: none;
+    overflow-wrap: normal;
+  }
+  .landing :global(.copy-command code) {
+    font-size: var(--sl-text-sm);
+    padding: 0.7rem 0.9rem;
+    background: none;
+    border-radius: 0;
+    overflow-wrap: normal;
+  }
+  section {
+    min-width: 0;
+  }
+  .hero {
+    display: grid;
+    gap: 2.5rem;
+    align-items: start;
+  }
+  @media (min-width: 64rem) {
+    .hero {
+      grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+    }
+  }
+  .hero-copy {
+    display: grid;
+    gap: 1.1rem;
+    min-width: 0;
+  }
+  h1 {
+    font-size: clamp(2.6rem, 6vw, 3.6rem);
+    line-height: 1.05;
+    margin: 0;
+    letter-spacing: -0.02em;
+  }
+  .tagline {
+    font-size: var(--sl-text-2xl);
+    line-height: 1.25;
+    font-weight: 600;
+    color: var(--sl-color-text-accent);
+  }
+  .lede {
+    font-size: var(--sl-text-lg);
+    line-height: 1.6;
+    color: var(--sl-color-gray-2);
+    max-width: 40rem;
+  }
+  .note,
+  .small,
+  .section-lede {
+    color: var(--sl-color-gray-3);
+  }
+  .note,
+  .small {
+    font-size: var(--sl-text-sm);
+  }
+  .small {
+    margin-top: 0.6rem;
+  }
+  .section-lede {
+    margin: -0.4rem 0 1.4rem;
+    max-width: 48rem;
+  }
+  .hero-demo {
+    min-width: 0;
+  }
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+  .button {
+    display: inline-block;
+    padding: 0.6rem 1.1rem;
+    border-radius: 999px;
+    border: 1px solid var(--sl-color-gray-4);
+    color: var(--sl-color-white);
+    text-decoration: none;
+    font-weight: 600;
+  }
+  .button.primary {
+    background: var(--sl-color-text-accent);
+    border-color: var(--sl-color-text-accent);
+    color: var(--sl-color-black);
+  }
+  .button:focus-visible,
+  .landing a:focus-visible {
+    outline: 2px solid var(--sl-color-text-accent);
+    outline-offset: 2px;
+  }
+  .cards {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: 1rem;
+  }
+  .cards > li,
+  .card {
+    margin: 0;
+    padding: 1.2rem 1.25rem;
+    border: 1px solid var(--sl-color-gray-5);
+    border-radius: 0.75rem;
+    background: var(--sl-color-gray-7, var(--sl-color-gray-6));
+    min-width: 0;
+  }
+  .card {
+    display: grid;
+    gap: 0.75rem;
+    align-content: start;
+  }
+  @media (min-width: 50rem) {
+    .three {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+    .two {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .guarantees {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  @media (min-width: 72rem) {
+    .guarantees {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+  .cards p,
+  .steps p {
+    color: var(--sl-color-gray-2);
+  }
+  .steps {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: 1rem;
+  }
+  @media (min-width: 50rem) {
+    .steps {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  @media (min-width: 72rem) {
+    .steps {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+  }
+  .steps li {
+    margin: 0;
+    display: grid;
+    gap: 0.5rem;
+    align-content: start;
+    padding: 1.2rem 1.25rem;
+    border-top: 3px solid var(--sl-color-text-accent);
+    background: var(--sl-color-gray-7, var(--sl-color-gray-6));
+    border-radius: 0 0 0.75rem 0.75rem;
+    min-width: 0;
+  }
+  .num {
+    font-family: var(--sl-font-mono);
+    color: var(--sl-color-text-accent);
+    font-weight: 700;
+  }
+  .cmd {
+    justify-self: start;
+    font-size: var(--sl-text-sm);
+    max-width: 100%;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+  .more {
+    margin-top: 1.2rem !important;
+  }
+  .start {
+    display: grid;
+    gap: 1rem;
+    max-width: 44rem;
+  }
+  .start h2 {
+    margin-bottom: 0;
+  }
+  .site-footer {
+    border-top: 1px solid var(--sl-color-gray-5);
+    padding-top: 1.5rem;
+    display: grid;
+    gap: 0.6rem;
+    font-size: var(--sl-text-sm);
+    color: var(--sl-color-gray-3);
+  }
+  .site-footer nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem 1.4rem;
+  }
+</style>

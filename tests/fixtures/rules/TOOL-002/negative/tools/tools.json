@@ -1,0 +1,36 @@
+{
+  "tools": [
+    {
+      "name": "a",
+      "description": "Get a.",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "order_id": {
+            "type": "string",
+            "description": "The order identifier, which always starts with ord_ and is case sensitive."
+          }
+        },
+        "required": [
+          "order_id"
+        ]
+      }
+    },
+    {
+      "name": "b",
+      "description": "Get b.",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "customer_id": {
+            "type": "string",
+            "description": "The customer identifier, starting with cus_."
+          }
+        },
+        "required": [
+          "customer_id"
+        ]
+      }
+    }
+  ]
+}

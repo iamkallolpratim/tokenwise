@@ -1,0 +1,5 @@
+{"session_id":"conv-a","request":{"messages":[{"role":"user","content":"PRIVATE-PROMPT-MARKER"}]},"response":{"id":"chatcmpl-1","model":"gpt-5","created":1793354400,"usage":{"prompt_tokens":5000,"completion_tokens":300,"prompt_tokens_details":{"cached_tokens":0}}}}
+{"session_id":"conv-a","response":{"id":"chatcmpl-2","model":"gpt-5","created":1793354460,"usage":{"prompt_tokens":6000,"completion_tokens":200,"prompt_tokens_details":{"cached_tokens":4864}}}}
+{"session_id":"conv-b","id":"resp_1","model":"gpt-5","timestamp":"2026-10-30T11:00:00Z","usage":{"input_tokens":12000,"output_tokens":400,"input_tokens_details":{"cached_tokens":4000,"cache_write_tokens":7000}}}
+{"id":"resp_bad","usage":{"input_tokens":100,"output_tokens":-5}}
+{"id":"no-usage","object":"list"}

@@ -1,0 +1,14 @@
+{
+  "version": 1,
+  "defaultModel": null,
+  "exclude": [
+    "node_modules/**",
+    ".git/**",
+    "dist/**",
+    "coverage/**",
+    ".tokenwise/**",
+    "apps/cli/skills/**",
+    "examples/**",
+    "tests/fixtures/**"
+  ]
+}

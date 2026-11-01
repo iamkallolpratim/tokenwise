@@ -1,0 +1,20 @@
+{
+  "tools": [
+    {
+      "name": "get_order",
+      "description": "Look up an order, e.g. ord_1.",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Identifier."
+          }
+        },
+        "required": [
+          "id"
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+node_modules/
+dist/
+coverage/
+.tokenwise/backups/
+*.log
+apps/cli/skills/
+.tokenwise/cache/
+.tokenwise/baseline.json
+apps/cli/README.md
+apps/cli/LICENSE
+.tokenwise/usage.json

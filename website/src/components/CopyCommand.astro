@@ -1,0 +1,103 @@
+---
+interface Props {
+  command: string;
+  /** Visible label above the command, optional. */
+  label?: string;
+}
+const { command, label } = Astro.props;
+---
+
+<div class="copy-command">
+  {label && <span class="label">{label}</span>}
+  <div class="row">
+    <!-- Long commands scroll sideways, so the code is focusable for keyboard scrolling. -->
+    <code tabindex="0"><span class="prompt" aria-hidden="true">$ </span>{command}</code>
+    <button type="button" data-copy={command} aria-label={`Copy command: ${command}`}>
+      <span class="idle">Copy</span><span class="done" hidden>Copied</span>
+    </button>
+    <span class="sr-only" role="status" aria-live="polite"></span>
+  </div>
+</div>
+
+<script>
+  for (const button of document.querySelectorAll<HTMLButtonElement>(".copy-command button[data-copy]")) {
+    button.addEventListener("click", async () => {
+      const text = button.dataset.copy ?? "";
+      const status = button.parentElement?.querySelector<HTMLElement>("[role=status]");
+      try {
+        await navigator.clipboard.writeText(text);
+        button.querySelector<HTMLElement>(".idle")?.setAttribute("hidden", "");
+        button.querySelector<HTMLElement>(".done")?.removeAttribute("hidden");
+        if (status) status.textContent = "Copied to clipboard";
+        setTimeout(() => {
+          button.querySelector<HTMLElement>(".idle")?.removeAttribute("hidden");
+          button.querySelector<HTMLElement>(".done")?.setAttribute("hidden", "");
+          if (status) status.textContent = "";
+        }, 2000);
+      } catch {
+        // Clipboard unavailable (insecure context or denied): select the text so it can be copied by hand.
+        const code = button.parentElement?.querySelector("code");
+        if (code) window.getSelection()?.selectAllChildren(code);
+        if (status) status.textContent = "Press Ctrl+C or Cmd+C to copy";
+      }
+    });
+  }
+</script>
+
+<style>
+  .copy-command {
+    display: grid;
+    gap: 0.35rem;
+    min-width: 0;
+  }
+  .label {
+    font-size: var(--sl-text-sm);
+    color: var(--sl-color-gray-3);
+  }
+  .row {
+    display: flex;
+    align-items: stretch;
+    border: 1px solid var(--sl-color-gray-5);
+    border-radius: 0.5rem;
+    background: var(--sl-color-gray-7, var(--sl-color-black));
+    min-width: 0;
+  }
+  code {
+    flex: 1;
+    min-width: 0;
+    overflow-x: auto;
+    white-space: nowrap;
+    padding: 0.7rem 0.9rem;
+    font-family: var(--sl-font-mono);
+    font-size: var(--sl-text-sm);
+    background: none;
+    border: 0;
+    color: var(--sl-color-white);
+  }
+  .prompt {
+    color: var(--sl-color-gray-3);
+    user-select: none;
+  }
+  button {
+    flex: none;
+    border: 0;
+    border-left: 1px solid var(--sl-color-gray-5);
+    border-radius: 0 0.5rem 0.5rem 0;
+    padding: 0 0.9rem;
+    font: inherit;
+    font-size: var(--sl-text-sm);
+    font-weight: 600;
+    color: var(--sl-color-text-accent);
+    background: transparent;
+    cursor: pointer;
+    min-width: 5.5rem;
+  }
+  button:hover {
+    background: var(--sl-color-accent-low);
+  }
+  code:focus-visible,
+  button:focus-visible {
+    outline: 2px solid var(--sl-color-text-accent);
+    outline-offset: -2px;
+  }
+</style>

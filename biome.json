@@ -1,0 +1,44 @@
+{
+  "$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
+  "files": {
+    "includes": [
+      "**",
+      "!**/node_modules",
+      "!**/dist",
+      "!**/coverage",
+      "!examples",
+      "!tests/fixtures",
+      "!**/.tokenwise",
+      "!apps/cli/skills",
+      "!**/*.md",
+      "!**/__snapshots__",
+      "!website/.astro",
+      "!website/.lighthouseci",
+      "!website/.lighthouserc.json",
+      "!**/*.astro",
+      "!website/src/data/generated",
+      "!website/src/data/demo",
+      "!website/public/demo",
+      "!website/public/schemas"
+    ]
+  },
+  "formatter": {
+    "indentStyle": "space",
+    "indentWidth": 2,
+    "lineWidth": 110
+  },
+  "linter": {
+    "enabled": true,
+    "rules": {
+      "preset": "recommended",
+      "style": {
+        "noNonNullAssertion": "error"
+      }
+    }
+  },
+  "javascript": {
+    "formatter": {
+      "quoteStyle": "double"
+    }
+  }
+}

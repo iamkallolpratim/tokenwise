@@ -1,0 +1,95 @@
+---
+// Accessible tabs (WAI-ARIA tabs pattern) without a UI framework: arrow keys, Home and End move
+// between tabs; only the selected panel is shown. Without JavaScript every panel stays visible.
+interface Props {
+  id: string;
+  labels: string[];
+}
+const { id, labels } = Astro.props;
+---
+
+<div class="tw-tabs" data-tabs>
+  <div role="tablist" aria-label="Example output" class="tablist" hidden>
+    {labels.map((label, i) => (
+      <button
+        type="button"
+        role="tab"
+        id={`${id}-tab-${i}`}
+        aria-controls={`${id}-panel-${i}`}
+        aria-selected={i === 0 ? "true" : "false"}
+        tabindex={i === 0 ? 0 : -1}
+      >
+        {label}
+      </button>
+    ))}
+  </div>
+  <slot />
+</div>
+
+<script>
+  for (const root of document.querySelectorAll<HTMLElement>("[data-tabs]")) {
+    const tablist = root.querySelector<HTMLElement>("[role=tablist]");
+    const tabs = [...root.querySelectorAll<HTMLButtonElement>("[role=tab]")];
+    const panels = tabs.map((t) => document.getElementById(t.getAttribute("aria-controls") ?? ""));
+    if (!tablist || panels.some((p) => !p)) continue;
+    tablist.hidden = false;
+    const select = (index: number, focus: boolean) => {
+      tabs.forEach((tab, i) => {
+        const on = i === index;
+        tab.setAttribute("aria-selected", String(on));
+        tab.tabIndex = on ? 0 : -1;
+        const panel = panels[i];
+        if (panel) panel.hidden = !on;
+      });
+      if (focus) tabs[index]?.focus();
+    };
+    tabs.forEach((tab, i) => {
+      tab.addEventListener("click", () => select(i, false));
+      tab.addEventListener("keydown", (e) => {
+        const last = tabs.length - 1;
+        const next =
+          e.key === "ArrowRight" ? (i === last ? 0 : i + 1)
+          : e.key === "ArrowLeft" ? (i === 0 ? last : i - 1)
+          : e.key === "Home" ? 0
+          : e.key === "End" ? last
+          : -1;
+        if (next < 0) return;
+        e.preventDefault();
+        select(next, true);
+      });
+    });
+    select(0, false);
+  }
+</script>
+
+<style>
+  .tablist {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem;
+    border-bottom: 1px solid var(--sl-color-gray-5);
+    margin-bottom: 1rem;
+  }
+  .tablist[hidden] {
+    display: none;
+  }
+  [role="tab"] {
+    font: inherit;
+    font-weight: 600;
+    padding: 0.55rem 0.9rem;
+    border: 0;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+    background: none;
+    color: var(--sl-color-gray-2);
+    cursor: pointer;
+  }
+  [role="tab"][aria-selected="true"] {
+    color: var(--sl-color-white);
+    border-bottom-color: var(--sl-color-text-accent);
+  }
+  [role="tab"]:focus-visible {
+    outline: 2px solid var(--sl-color-text-accent);
+    outline-offset: 2px;
+  }
+</style>

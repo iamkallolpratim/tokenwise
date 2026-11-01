@@ -1,0 +1,65 @@
+/* One accent color, tuned for WCAG AA in both themes. Fonts are the system stacks Starlight
+   uses by default: nothing is downloaded. */
+:root {
+  --sl-color-accent-low: #0c2c22;
+  --sl-color-accent: #2aa57a;
+  --sl-color-accent-high: #a8ecd2;
+  --tw-term-bg: #0d1117;
+  --tw-term-fg: #e6edf3;
+  --tw-term-border: #30363d;
+}
+:root[data-theme="light"] {
+  --sl-color-accent-low: #cdf3e3;
+  --sl-color-accent: #0b7a55;
+  --sl-color-accent-high: #064430;
+}
+
+/* Terminal output captured from the CLI (website/scripts/capture-demo.ts). The palette is the
+   same in both themes; every color has at least 4.5:1 contrast on --tw-term-bg. */
+.a-bold {
+  font-weight: 700;
+}
+.a-dim {
+  color: #9da7b3;
+}
+.a-red {
+  color: #ff8a80;
+}
+.a-green {
+  color: #7ee787;
+}
+.a-yellow {
+  color: #e3b341;
+}
+.a-blue {
+  color: #79c0ff;
+}
+.a-magenta {
+  color: #d2a8ff;
+}
+.a-cyan {
+  color: #76e3ea;
+}
+.a-white {
+  color: #f0f6fc;
+}
+.a-gray {
+  color: #9da7b3;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* The landing page hides Starlight's page title (it has its own h1); drop the empty panel left behind. */
+.content-panel:has(> .sl-container:empty) {
+  display: none;
+}

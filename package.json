@@ -1,0 +1,33 @@
+{
+  "name": "tokenwise-monorepo",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@9.15.0",
+  "engines": {
+    "node": ">=26.0.0"
+  },
+  "scripts": {
+    "build": "pnpm --filter @klawde/tokenwise build",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "lint": "biome check .",
+    "format": "biome check --write .",
+    "test": "pnpm build && vitest run",
+    "test:unit": "vitest run --project unit",
+    "sync-skills": "node scripts/sync-skills.mjs",
+    "gate": "pnpm typecheck && pnpm lint && pnpm test",
+    "gate:linux": "bash scripts/linux-gate.sh",
+    "perf": "pnpm build && node scripts/perf.mjs 5000",
+    "site": "pnpm build && pnpm --filter website build && pnpm --filter website check"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "2.6.4",
+    "@types/node": "26",
+    "tsup": "9.0.0",
+    "typescript": "6.0.3",
+    "vitest": "5.0.5",
+    "@tokenwise/shared": "workspace:*",
+    "@tokenwise/core": "workspace:*",
+    "@tokenwise/tokenizers": "workspace:*",
+    "@tokenwise/integrations": "workspace:*"
+  }
+}

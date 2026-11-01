@@ -1,0 +1,815 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-10-30T09:12:00.000Z",
+  "tool": {
+    "name": "tokenwise",
+    "version": "0.1.0"
+  },
+  "repository": {
+    "target": ".",
+    "filesAnalyzed": 8,
+    "codeFilesAnalyzed": 2,
+    "categories": {
+      "subagent": 2,
+      "skill": 1,
+      "agent-instructions": 2,
+      "prompt-template": 1,
+      "rag-config": 1,
+      "tool-schema": 1
+    },
+    "skipped": {}
+  },
+  "tokens": {
+    "total": 3337,
+    "method": "estimated",
+    "model": null,
+    "scope": "text",
+    "methodology": "Estimated with TokenWise's generic estimator (no model selected); see \"Token counting\" in the TokenWise docs for its error range.",
+    "files": [
+      {
+        "path": ".claude/agents/reviewer.md",
+        "category": "subagent",
+        "tokens": 112
+      },
+      {
+        "path": ".claude/agents/tester.md",
+        "category": "subagent",
+        "tokens": 98
+      },
+      {
+        "path": ".claude/skills/deploy/SKILL.md",
+        "category": "skill",
+        "tokens": 82
+      },
+      {
+        "path": "AGENTS.md",
+        "category": "agent-instructions",
+        "tokens": 205
+      },
+      {
+        "path": "CLAUDE.md",
+        "category": "agent-instructions",
+        "tokens": 1928
+      },
+      {
+        "path": "prompts/support-system.md",
+        "category": "prompt-template",
+        "tokens": 127
+      },
+      {
+        "path": "rag/retrieval.yaml",
+        "category": "rag-config",
+        "tokens": 36
+      },
+      {
+        "path": "tools/tools.json",
+        "category": "tool-schema",
+        "tokens": 749
+      }
+    ]
+  },
+  "score": {
+    "score": 50,
+    "cappedBy": "2 open CRITICAL finding(s) (SEC-002, SEC-001) cap the score at 50",
+    "dimensions": [
+      {
+        "key": "prompt",
+        "name": "Prompt efficiency",
+        "weight": 20,
+        "score": 67,
+        "explanation": "277 tokens of redundancy/verbosity findings in 2552 prose tokens (10.9%); score = 100 × (1 − 3 × ratio)."
+      },
+      {
+        "key": "context",
+        "name": "Context efficiency",
+        "weight": 25,
+        "score": 71,
+        "explanation": "2133 always-loaded tokens vs threshold 2000 (base 94), minus 23 for 3 context finding(s)."
+      },
+      {
+        "key": "tool",
+        "name": "Tool efficiency",
+        "weight": 20,
+        "score": 60,
+        "explanation": "4 tool finding(s) across 1 tool file(s); 100 − 40."
+      },
+      {
+        "key": "output",
+        "name": "Output efficiency",
+        "weight": 15,
+        "score": null,
+        "explanation": "n/a: requires an eval run (tokenwise benchmark --eval)."
+      },
+      {
+        "key": "agentLoop",
+        "name": "Agent-loop efficiency",
+        "weight": 20,
+        "score": null,
+        "explanation": "n/a: requires runtime usage data (tokenwise ingest <usage.jsonl>); 2 static LOOP finding(s) lower confidence but are not scored."
+      }
+    ],
+    "renormalized": true,
+    "note": "Weights renormalized over 3 of 5 dimensions with evidence (65% of total weight)."
+  },
+  "findings": {
+    "counts": {
+      "CRITICAL": 2,
+      "HIGH": 0,
+      "MEDIUM": 9,
+      "LOW": 11
+    },
+    "items": [
+      {
+        "id": "SEC-002-8ef8774edb87",
+        "ruleId": "SEC-002",
+        "severity": "CRITICAL",
+        "category": "security",
+        "file": "AGENTS.md",
+        "range": {
+          "startLine": 17,
+          "endLine": 17
+        },
+        "relatedLocations": [
+          {
+            "file": "AGENTS.md",
+            "startLine": 15,
+            "endLine": 15
+          }
+        ],
+        "description": "Contradiction: line 15 requires \"You MUST pin dependency versions in package.json.\" but line 17 forbids it.",
+        "evidence": "You MUST pin dependency versions in package.json. ⟷ You MUST NOT pin dependency versions in package.json.",
+        "risk": "The model may follow either instruction. Low confidence: a qualifier elsewhere may resolve it.",
+        "recommendation": "Decide which rule applies and delete the other, or add the condition that separates them.",
+        "autoFixable": false,
+        "kind": "verified",
+        "confirmWith": "Read both lines in context; this rule matches only identical objects after normalization."
+      },
+      {
+        "id": "SEC-001-98d305175da9",
+        "ruleId": "SEC-001",
+        "severity": "CRITICAL",
+        "category": "security",
+        "file": "prompts/support-system.md",
+        "range": {
+          "startLine": 12,
+          "endLine": 12
+        },
+        "description": "Possible anthropic-api-key in a file that is sent to models.",
+        "evidence": "[REDACTED:anthropic-api-key] at line 12",
+        "risk": "Anything in a prompt file is sent to the model provider and may appear in logs or outputs.",
+        "recommendation": "Remove the secret, rotate it, and load it at runtime from an environment variable or secret store.",
+        "autoFixable": false,
+        "kind": "verified"
+      },
+      {
+        "id": "CTX-003-14465a68a406",
+        "ruleId": "CTX-003",
+        "severity": "MEDIUM",
+        "category": "context",
+        "file": ".claude/agents/reviewer.md",
+        "range": {
+          "startLine": 6,
+          "endLine": 6
+        },
+        "relatedLocations": [
+          {
+            "file": ".claude/agents/tester.md",
+            "startLine": 6,
+            "endLine": 6
+          }
+        ],
+        "description": "Background paragraph repeated in 2 definitions: .claude/agents/reviewer.md, .claude/agents/tester.md.",
+        "evidence": "Acme Orders is a TypeScript service that accepts orders from the storefront, validates them, and publishes them to the fulfillment queue. It runs on Node.js, s…",
+        "estimatedSavings": {
+          "tokens": 55,
+          "basis": "potential",
+          "confidence": "low",
+          "method": "estimated"
+        },
+        "risk": "Each subagent starts with its own context; removing shared background may leave one without facts it needs.",
+        "recommendation": "Put shared project background in the always-loaded instruction file (which subagents may already receive) or a shared reference, and keep only role-specific context in each definition. Verify what each subagent actually receives before removing it.",
+        "autoFixable": false,
+        "kind": "recommendation",
+        "confirmWith": "Check the harness docs for whether subagents inherit the root instruction file, or inspect a subagent transcript."
+      },
+      {
+        "id": "RED-004-fccd8a0b4129",
+        "ruleId": "RED-004",
+        "severity": "MEDIUM",
+        "category": "redundancy",
+        "file": "CLAUDE.md",
+        "range": {
+          "startLine": 18,
+          "endLine": 52
+        },
+        "relatedLocations": [
+          {
+            "file": "AGENTS.md",
+            "startLine": 5,
+            "endLine": 7
+          },
+          {
+            "file": "AGENTS.md",
+            "startLine": 11,
+            "endLine": 11
+          }
+        ],
+        "description": "2 block(s) are duplicated between AGENTS.md and CLAUDE.md.",
+        "evidence": "- You MUST NOT log customer email addresses or payment tokens. - Never commit files under `secrets/` or any `.env` file. - Do not call the production endpoint …",
+        "estimatedSavings": {
+          "tokens": 128,
+          "basis": "potential",
+          "confidence": "medium",
+          "method": "estimated"
+        },
+        "risk": "Copies drift apart over time, and agents that load both files pay for the same text twice.",
+        "recommendation": "Keep shared instructions in AGENTS.md and import it from CLAUDE.md with a line containing `@AGENTS.md` (Claude Code supports @path imports; when both files exist it reads only CLAUDE.md). Keep Claude-specific notes in CLAUDE.md. Imports do not reduce Claude's context cost by themselves; they remove the maintenance duplication.",
+        "autoFixable": false,
+        "kind": "verified"
+      },
+      {
+        "id": "CTX-002-d7bf9ee2f962",
+        "ruleId": "CTX-002",
+        "severity": "MEDIUM",
+        "category": "context",
+        "file": "CLAUDE.md",
+        "range": {
+          "startLine": 56,
+          "endLine": 84
+        },
+        "description": "Embedded log of 915 tokens (estimated) in an always-loaded file.",
+        "evidence": "```text 2026-09-14T08:01:12Z ERROR orders.publish timeout after 30000ms queue=fulfillment-primary attempt=1 orderId=ord_8812 2026-09-14T08:01:42Z ERROR orders.…",
+        "estimatedSavings": {
+          "tokens": 915,
+          "basis": "potential",
+          "confidence": "medium",
+          "method": "estimated"
+        },
+        "risk": "If the agent needs this data for a task, it must be able to find it on demand.",
+        "recommendation": "Move the log to a separate file (e.g. docs/) and reference its path; summarize the lesson in one or two lines.",
+        "autoFixable": false,
+        "kind": "verified"
+      },
+      {
+        "id": "RAG-001-e9000f3dbec9",
+        "ruleId": "RAG-001",
+        "severity": "MEDIUM",
+        "category": "rag",
+        "file": "rag/retrieval.yaml",
+        "range": {
+          "startLine": 4,
+          "endLine": 4
+        },
+        "description": "top_k: 50 retrieves more than 10 chunks per query (up to ~40,000 characters at chunk_size 800).",
+        "evidence": "top_k: 50",
+        "risk": "Fewer chunks can drop the passage that answers the question; measure recall before lowering it.",
+        "recommendation": "Lower top_k toward 10 and add reranking or filters so the top chunks are the right ones.",
+        "autoFixable": false,
+        "kind": "recommendation",
+        "confirmWith": "Run retrieval or answer-quality evals before and after the change; static config cannot show retrieved token volume."
+      },
+      {
+        "id": "RAG-004-4ed5dae2fa5e",
+        "ruleId": "RAG-004",
+        "severity": "MEDIUM",
+        "category": "rag",
+        "file": "rag/retrieval.yaml",
+        "range": {
+          "startLine": 6,
+          "endLine": 6
+        },
+        "description": "chunk_overlap 400 is 50% of chunk_size 800; adjacent retrieved chunks repeat that much text.",
+        "evidence": "chunk_overlap: 400, chunk_size: 800",
+        "risk": "Too little overlap can split a fact across chunks.",
+        "recommendation": "Keep overlap around 10–20% of chunk size, or deduplicate overlapping spans before building the prompt.",
+        "autoFixable": false,
+        "kind": "recommendation",
+        "confirmWith": "Run retrieval or answer-quality evals before and after the change; static config cannot show retrieved token volume."
+      },
+      {
+        "id": "LOOP-001-02cf14e4a6be",
+        "ruleId": "LOOP-001",
+        "severity": "MEDIUM",
+        "category": "agent-loop",
+        "file": "src/agent.ts",
+        "range": {
+          "startLine": 5,
+          "endLine": 5
+        },
+        "description": "`while (true)` calls a model and stops only when the model says so; there is no iteration cap.",
+        "evidence": "while (true)",
+        "risk": "A cap that is too low cuts off long tasks; pick it from observed turn counts.",
+        "recommendation": "Add a maximum number of turns and stop (or ask the user) when it is reached.",
+        "autoFixable": false,
+        "kind": "recommendation",
+        "confirmWith": "Static analysis cannot measure runtime usage; import usage logs (tokenwise ingest) to confirm."
+      },
+      {
+        "id": "LOOP-002-cc7e0f9b2945",
+        "ruleId": "LOOP-002",
+        "severity": "MEDIUM",
+        "category": "agent-loop",
+        "file": "src/agent.ts",
+        "range": {
+          "startLine": 13,
+          "endLine": 13
+        },
+        "description": "`for (;;)` retries a failed model call with no maximum.",
+        "evidence": "for (;;)",
+        "risk": "Without a cap, a persistent error (bad request, revoked key) repeats the full prompt indefinitely.",
+        "recommendation": "Retry a bounded number of times with backoff, and only for retryable errors (rate limits, timeouts).",
+        "autoFixable": false,
+        "kind": "recommendation",
+        "confirmWith": "Static analysis cannot measure runtime usage; import usage logs (tokenwise ingest) to confirm."
+      },
+      {
+        "id": "TOOL-001-faee27a20a79",
+        "ruleId": "TOOL-001",
+        "severity": "MEDIUM",
+        "category": "tool",
+        "file": "tools/tools.json",
+        "range": {
+          "startLine": 4,
+          "endLine": 4
+        },
+        "description": "Tool \"get_order\" definition is 430 tokens (estimated); threshold 300. Its description alone is 301.",
+        "evidence": "Fetch a single order by its identifier. This tool retrieves an order from the Acme Orders database using the order ID. Use this tool whenever you need to look …",
+        "estimatedSavings": {
+          "tokens": 130,
+          "basis": "potential",
+          "confidence": "low",
+          "method": "estimated"
+        },
+        "risk": "Tool definitions are sent with every request that offers the tool; trimming the wrong detail makes the model call it wrongly.",
+        "recommendation": "Keep the description to what the model needs to choose and call the tool; move worked examples and background to documentation. Do not remove required parameters (order_id).",
+        "autoFixable": false,
+        "kind": "verified",
+        "confirmWith": "Run a tool-selection eval before and after trimming."
+      },
+      {
+        "id": "TOOL-003-f477a1eb0104",
+        "ruleId": "TOOL-003",
+        "severity": "MEDIUM",
+        "category": "tool",
+        "file": "tools/tools.json",
+        "range": {
+          "startLine": 4,
+          "endLine": 4
+        },
+        "description": "Tool \"get_order\" description carries 3 inline example(s) (~238 tokens, estimated).",
+        "evidence": "Example: to look up order ord_123 call get_order with {\"order_id\": \"ord_123\"} and you will receive {\"id\": \"ord_123\", \"status\": \"shipped\", \"items\": [{\"sku\": \"AB…",
+        "estimatedSavings": {
+          "tokens": 167,
+          "basis": "potential",
+          "confidence": "low",
+          "method": "estimated"
+        },
+        "risk": "Examples can teach argument formats; keep one minimal example if calls fail without it.",
+        "recommendation": "Keep at most one short example of the arguments; the input schema already defines the shape. Move response samples to documentation.",
+        "autoFixable": false,
+        "kind": "recommendation",
+        "confirmWith": "Compare tool-call accuracy with and without the examples in an eval suite."
+      },
+      {
+        "id": "VERB-001-9a6d15d92737",
+        "ruleId": "VERB-001",
+        "severity": "LOW",
+        "category": "verbosity",
+        "file": "CLAUDE.md",
+        "range": {
+          "startLine": 3,
+          "endLine": 3
+        },
+        "description": "Filler phrase(s): \"thank you so much\", \"we really appreciate\", \"we hope you enjoy\".",
+        "evidence": "Hello Claude! Thank you so much for helping out with this project. We really appreciate your assistance and we hope you enjoy working on this codebase as much …",
+        "estimatedSavings": {
+          "tokens": 11,
+          "basis": "potential",
+          "confidence": "medium",
+          "method": "estimated"
+        },
+        "risk": "Low, but rewording is a judgment call: some phrases soften or emphasize an instruction on purpose.",
+        "recommendation": "State the instruction directly (e.g. \"Please make sure to always run X\" → \"Always run X\").",
+        "autoFixable": false,
+        "kind": "verified"
+      },
+      {
+        "id": "VERB-002-cb85566afeec",
+        "ruleId": "VERB-002",
+        "severity": "LOW",
+        "category": "verbosity",
+        "file": "CLAUDE.md",
+        "range": {
+          "startLine": 3,
+          "endLine": 3
+        },
+        "description": "Opening paragraph is social text with no instruction or constraint.",
+        "evidence": "Hello Claude! Thank you so much for helping out with this project. We really appreciate your assistance and we hope you enjoy working on this codebase as much …",
+        "estimatedSavings": {
+          "tokens": 42,
+          "basis": "potential",
+          "confidence": "medium",
+          "method": "estimated"
+        },
+        "risk": "Low: the paragraph contains no instruction, but check it does not set tone the agent should keep.",
+        "recommendation": "Remove the preamble, or replace it with one line of context the agent needs.",
+        "autoFixable": false,
+        "kind": "verified"
+      },
+      {
+        "id": "VERB-001-aa9909687219",
+        "ruleId": "VERB-001",
+        "severity": "LOW",
+        "category": "verbosity",
+        "file": "CLAUDE.md",
+        "range": {
+          "startLine": 11,
+          "endLine": 14
+        },
+        "description": "Filler phrase(s): \"please make sure to\".",
+        "evidence": "- Use TypeScript strict mode for all new files. - Prefer small pure functions over classes. - Please make sure to always run `pnpm test` before you say a task …",
+        "estimatedSavings": {
+          "tokens": 4,
+          "basis": "potential",
+          "confidence": "medium",
+          "method": "estimated"
+        },
+        "risk": "Low, but rewording is a judgment call: some phrases soften or emphasize an instruction on purpose.",
+        "recommendation": "State the instruction directly (e.g. \"Please make sure to always run X\" → \"Always run X\").",
+        "autoFixable": false,
+        "kind": "verified"
+      },
+      {
+        "id": "RED-003-5aa8813608eb",
+        "ruleId": "RED-003",
+        "severity": "LOW",
+        "category": "redundancy",
+        "file": "CLAUDE.md",
+        "range": {
+          "startLine": 48,
+          "endLine": 48
+        },
+        "relatedLocations": [
+          {
+            "file": "CLAUDE.md",
+            "startLine": 46,
+            "endLine": 46
+          }
+        ],
+        "description": "Paragraph is 90% similar (5-shingle Jaccard) to line 46.",
+        "evidence": "All schema changes go through migrations in `db/migrations/`. Run migrations locally with `pnpm db:migrate` before you start the service, and always review the…",
+        "estimatedSavings": {
+          "tokens": 42,
+          "basis": "potential",
+          "confidence": "medium",
+          "method": "estimated"
+        },
+        "risk": "Medium: near-duplicates often differ in a detail that matters (a value, a negation, a scope).",
+        "recommendation": "Compare both paragraphs, merge them into one, and keep every distinct requirement.",
+        "autoFixable": false,
+        "kind": "verified"
+      },
+      {
+        "id": "VERB-001-52f933ec660e",
+        "ruleId": "VERB-001",
+        "severity": "LOW",
+        "category": "verbosity",
+        "file": "CLAUDE.md",
+        "range": {
+          "startLine": 116,
+          "endLine": 116
+        },
+        "description": "Filler phrase(s): \"thanks again\", \"let us know if you have any questions\", \"have a wonderful day\", \"we look forward to working with you\".",
+        "evidence": "Thanks again for all your help! Let us know if you have any questions, and have a wonderful day. We look forward to working with you.",
+        "estimatedSavings": {
+          "tokens": 21,
+          "basis": "potential",
+          "confidence": "medium",
+          "method": "estimated"
+        },
+        "risk": "Low, but rewording is a judgment call: some phrases soften or emphasize an instruction on purpose.",
+        "recommendation": "State the instruction directly (e.g. \"Please make sure to always run X\" → \"Always run X\").",
+        "autoFixable": false,
+        "kind": "verified"
+      },
+      {
+        "id": "VERB-002-82d208c79b13",
+        "ruleId": "VERB-002",
+        "severity": "LOW",
+        "category": "verbosity",
+        "file": "CLAUDE.md",
+        "range": {
+          "startLine": 116,
+          "endLine": 116
+        },
+        "description": "Closing paragraph is social text with no instruction or constraint.",
+        "evidence": "Thanks again for all your help! Let us know if you have any questions, and have a wonderful day. We look forward to working with you.",
+        "estimatedSavings": {
+          "tokens": 29,
+          "basis": "potential",
+          "confidence": "medium",
+          "method": "estimated"
+        },
+        "risk": "Low: the paragraph contains no instruction, but check it does not set tone the agent should keep.",
+        "recommendation": "Remove the outro, or replace it with one line of context the agent needs.",
+        "autoFixable": false,
+        "kind": "verified"
+      },
+      {
+        "id": "RAG-002-1bb02e2f1e39",
+        "ruleId": "RAG-002",
+        "severity": "LOW",
+        "category": "rag",
+        "file": "rag/retrieval.yaml",
+        "range": {
+          "startLine": 1,
+          "endLine": 1
+        },
+        "description": "Retrieval config has no metadata filter (filter, where, namespace…).",
+        "evidence": "no filter keys found",
+        "risk": "Filters wrongly scoped hide relevant documents.",
+        "recommendation": "Filter by metadata the query already implies (product, tenant, document type) so fewer irrelevant chunks are retrieved.",
+        "autoFixable": false,
+        "kind": "recommendation",
+        "confirmWith": "Run retrieval or answer-quality evals before and after the change; static config cannot show retrieved token volume."
+      },
+      {
+        "id": "RAG-003-c3320da22d0f",
+        "ruleId": "RAG-003",
+        "severity": "LOW",
+        "category": "rag",
+        "file": "rag/retrieval.yaml",
+        "range": {
+          "startLine": 7,
+          "endLine": 7
+        },
+        "description": "rerank is disabled.",
+        "evidence": "rerank: false",
+        "risk": "A reranker adds latency and its own cost.",
+        "recommendation": "Retrieve broadly, rerank, and pass only the top few chunks to the model.",
+        "autoFixable": false,
+        "kind": "recommendation",
+        "confirmWith": "Run retrieval or answer-quality evals before and after the change; static config cannot show retrieved token volume."
+      },
+      {
+        "id": "CACHE-001-0424d49cfd14",
+        "ruleId": "CACHE-001",
+        "severity": "LOW",
+        "category": "context",
+        "file": "src/agent.ts",
+        "range": {
+          "startLine": 6,
+          "endLine": 6
+        },
+        "description": "Constant system prompt SYSTEM_PROMPT is sent from 2 call site(s), including inside a loop.",
+        "evidence": "SYSTEM_PROMPT at lines 6, 15",
+        "risk": "Prompt caching cuts the cost of reprocessing a repeated prefix; it does not shrink the context window. It only helps if the prefix is byte-identical and large enough for the provider to cache.",
+        "recommendation": "If the prefix is large, enable the provider's prompt caching for it. Separately consider application-level caching of results you recompute, and treat semantic response caching (reusing answers to similar questions) as a quality risk to evaluate.",
+        "autoFixable": false,
+        "kind": "recommendation",
+        "confirmWith": "Check provider usage fields for cached input tokens before and after."
+      },
+      {
+        "id": "TOOL-002-2529808b29f6",
+        "ruleId": "TOOL-002",
+        "severity": "LOW",
+        "category": "tool",
+        "file": "tools/tools.json",
+        "range": {
+          "startLine": 4,
+          "endLine": 4
+        },
+        "description": "Same description text appears 2 times: tool get_order, tool list_orders.",
+        "evidence": "Remember that order IDs always start with ord_ and are case sensitive.",
+        "estimatedSavings": {
+          "tokens": 14,
+          "basis": "potential",
+          "confidence": "medium",
+          "method": "estimated"
+        },
+        "risk": "Copied descriptions are easy to misapply (check each one still describes its parameter). Required parameters must stay.",
+        "recommendation": "Write each description for its own tool or parameter; state shared conventions once (e.g. in the tool most often called) instead of repeating them. Keep every parameter.",
+        "autoFixable": false,
+        "kind": "verified"
+      },
+      {
+        "id": "TOOL-002-616e3e11e805",
+        "ruleId": "TOOL-002",
+        "severity": "LOW",
+        "category": "tool",
+        "file": "tools/tools.json",
+        "range": {
+          "startLine": 4,
+          "endLine": 4
+        },
+        "description": "Same description text appears 3 times: get_order.order_id (required), list_orders.customer_id (required), cancel_order.order_id (required).",
+        "evidence": "The order identifier, which always starts with ord_ and is case sensitive.",
+        "estimatedSavings": {
+          "tokens": 28,
+          "basis": "potential",
+          "confidence": "medium",
+          "method": "estimated"
+        },
+        "risk": "Copied descriptions are easy to misapply (check each one still describes its parameter). Required parameters must stay.",
+        "recommendation": "Write each description for its own tool or parameter; state shared conventions once (e.g. in the tool most often called) instead of repeating them. Keep every parameter.",
+        "autoFixable": false,
+        "kind": "verified"
+      }
+    ]
+  },
+  "savings": {
+    "measured": 116,
+    "estimated": 0,
+    "potential": 1586,
+    "note": "Measured = before/after counts against a baseline. Estimated = size of text an auto-fix would remove. Potential = upper bound if a recommendation is followed; not additive across overlapping findings."
+  },
+  "opportunities": [
+    {
+      "id": "CTX-002-d7bf9ee2f962",
+      "ruleId": "CTX-002",
+      "location": "CLAUDE.md:56",
+      "tokens": 915,
+      "basis": "potential",
+      "autoFixable": false,
+      "description": "Embedded log of 915 tokens (estimated) in an always-loaded file."
+    },
+    {
+      "id": "TOOL-003-f477a1eb0104",
+      "ruleId": "TOOL-003",
+      "location": "tools/tools.json:4",
+      "tokens": 167,
+      "basis": "potential",
+      "autoFixable": false,
+      "description": "Tool \"get_order\" description carries 3 inline example(s) (~238 tokens, estimated)."
+    },
+    {
+      "id": "TOOL-001-faee27a20a79",
+      "ruleId": "TOOL-001",
+      "location": "tools/tools.json:4",
+      "tokens": 130,
+      "basis": "potential",
+      "autoFixable": false,
+      "description": "Tool \"get_order\" definition is 430 tokens (estimated); threshold 300. Its description alone is 301."
+    },
+    {
+      "id": "RED-004-fccd8a0b4129",
+      "ruleId": "RED-004",
+      "location": "CLAUDE.md:18",
+      "tokens": 128,
+      "basis": "potential",
+      "autoFixable": false,
+      "description": "2 block(s) are duplicated between AGENTS.md and CLAUDE.md."
+    },
+    {
+      "id": "CTX-003-14465a68a406",
+      "ruleId": "CTX-003",
+      "location": ".claude/agents/reviewer.md:6",
+      "tokens": 55,
+      "basis": "potential",
+      "autoFixable": false,
+      "description": "Background paragraph repeated in 2 definitions: .claude/agents/reviewer.md, .claude/agents/tester.md."
+    },
+    {
+      "id": "VERB-002-cb85566afeec",
+      "ruleId": "VERB-002",
+      "location": "CLAUDE.md:3",
+      "tokens": 42,
+      "basis": "potential",
+      "autoFixable": false,
+      "description": "Opening paragraph is social text with no instruction or constraint."
+    },
+    {
+      "id": "RED-003-5aa8813608eb",
+      "ruleId": "RED-003",
+      "location": "CLAUDE.md:48",
+      "tokens": 42,
+      "basis": "potential",
+      "autoFixable": false,
+      "description": "Paragraph is 90% similar (5-shingle Jaccard) to line 46."
+    },
+    {
+      "id": "VERB-002-82d208c79b13",
+      "ruleId": "VERB-002",
+      "location": "CLAUDE.md:116",
+      "tokens": 29,
+      "basis": "potential",
+      "autoFixable": false,
+      "description": "Closing paragraph is social text with no instruction or constraint."
+    },
+    {
+      "id": "TOOL-002-616e3e11e805",
+      "ruleId": "TOOL-002",
+      "location": "tools/tools.json:4",
+      "tokens": 28,
+      "basis": "potential",
+      "autoFixable": false,
+      "description": "Same description text appears 3 times: get_order.order_id (required), list_orders.customer_id (required), cancel_order.order_id (required)."
+    },
+    {
+      "id": "VERB-001-52f933ec660e",
+      "ruleId": "VERB-001",
+      "location": "CLAUDE.md:116",
+      "tokens": 21,
+      "basis": "potential",
+      "autoFixable": false,
+      "description": "Filler phrase(s): \"thanks again\", \"let us know if you have any questions\", \"have a wonderful day\", \"we look forward to working with you\"."
+    }
+  ],
+  "appliedChanges": [
+    {
+      "id": "<backup-id>",
+      "createdAt": "<time>",
+      "command": "optimize --apply --quiet",
+      "files": [
+        "CLAUDE.md"
+      ]
+    }
+  ],
+  "risks": [
+    "CRITICAL SEC-002 at AGENTS.md:17: Contradiction: line 15 requires \"You MUST pin dependency versions in package.json.\" but line 17 forbids it.",
+    "CRITICAL SEC-001 at prompts/support-system.md:12: Possible anthropic-api-key in a file that is sent to models.",
+    "9 recommendation(s) are based on static analysis only and need runtime evidence."
+  ],
+  "benchmark": {
+    "baselineCreatedAt": "2026-10-30T09:12:00.000Z",
+    "comparable": true,
+    "method": "estimated",
+    "encodingNote": null,
+    "files": [
+      {
+        "path": ".claude/agents/reviewer.md",
+        "before": 112,
+        "after": 112,
+        "status": "unchanged"
+      },
+      {
+        "path": ".claude/agents/tester.md",
+        "before": 98,
+        "after": 98,
+        "status": "unchanged"
+      },
+      {
+        "path": ".claude/skills/deploy/SKILL.md",
+        "before": 82,
+        "after": 82,
+        "status": "unchanged"
+      },
+      {
+        "path": "AGENTS.md",
+        "before": 205,
+        "after": 205,
+        "status": "unchanged"
+      },
+      {
+        "path": "CLAUDE.md",
+        "before": 2044,
+        "after": 1928,
+        "status": "changed"
+      },
+      {
+        "path": "prompts/support-system.md",
+        "before": 127,
+        "after": 127,
+        "status": "unchanged"
+      },
+      {
+        "path": "rag/retrieval.yaml",
+        "before": 36,
+        "after": 36,
+        "status": "unchanged"
+      },
+      {
+        "path": "tools/tools.json",
+        "before": 749,
+        "after": 749,
+        "status": "unchanged"
+      }
+    ],
+    "input": {
+      "before": 3453,
+      "after": 3337,
+      "change": -116,
+      "pctChange": -3.359397625253403
+    },
+    "output": {
+      "before": null,
+      "after": null,
+      "basis": null,
+      "note": "no eval run"
+    },
+    "filesChanged": 1,
+    "findings": {
+      "resolved": 5,
+      "introduced": 0,
+      "baseline": 27
+    },
+    "cost": null,
+    "quality": {
+      "label": "not verified",
+      "status": "awaiting validation"
+    }
+  },
+  "evaluation": null,
+  "usage": null,
+  "quality": "not verified"
+}

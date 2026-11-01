@@ -1,0 +1,4 @@
+retriever:
+  top_k: 5
+  reranker: cohere-rerank
+  filters: {tenant: x}

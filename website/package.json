@@ -1,0 +1,28 @@
+{
+  "name": "website",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "The TokenWise website: landing page and documentation, deployed to GitHub Pages.",
+  "scripts": {
+    "generate": "node scripts/generate.ts",
+    "demo": "node scripts/capture-demo.ts",
+    "assets": "node scripts/make-assets.ts",
+    "dev": "node scripts/generate.ts && node scripts/astro.ts dev",
+    "build": "node scripts/generate.ts && node scripts/capture-demo.ts && node scripts/astro.ts build",
+    "preview": "node scripts/astro.ts preview",
+    "check": "node scripts/check-docs.ts && node scripts/check-site.ts",
+    "check:external": "node scripts/check-site.ts --external",
+    "lighthouse": "node scripts/lighthouse.ts"
+  },
+  "dependencies": {
+    "@astrojs/markdown-remark": "7.3.2",
+    "@astrojs/starlight": "0.42.6",
+    "astro": "7.3.8",
+    "sharp": "0.35.4"
+  },
+  "devDependencies": {
+    "commander": "15.0.0",
+    "zod": "4.6.7"
+  }
+}

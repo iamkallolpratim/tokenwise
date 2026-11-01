@@ -1,0 +1,13 @@
+{
+  "name": "@tokenwise/integrations",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "dependencies": {
+    "@tokenwise/shared": "workspace:^",
+    "yaml": "2.9.1"
+  }
+}

@@ -1,0 +1,87 @@
+---
+interface Props {
+  /** Command line shown in the title bar, e.g. "$ tokenwise audit". */
+  command: string;
+  /** Pre-rendered HTML from website/scripts/lib/ansi.ts (already escaped). */
+  html: string;
+  caption?: string;
+  /** Limit the visible height; the block scrolls inside itself. */
+  maxHeight?: string;
+}
+const { command, html, caption, maxHeight = "28rem" } = Astro.props;
+---
+
+<figure class="terminal">
+  <div class="bar"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><code>{command}</code></div>
+  <pre tabindex="0" aria-label={`Output of ${command.replace(/^\$ /, "")}`} style={`max-height:${maxHeight}`}><code set:html={html} /></pre>
+  {caption && <figcaption>{caption}</figcaption>}
+</figure>
+
+<style>
+  .terminal {
+    margin: 0;
+    min-width: 0;
+  }
+  .bar {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.5rem 0.9rem;
+    background: #161b22;
+    border: 1px solid var(--tw-term-border);
+    border-bottom: 0;
+    border-radius: 0.6rem 0.6rem 0 0;
+    min-width: 0;
+  }
+  .bar code {
+    font-family: var(--sl-font-mono);
+    font-size: 0.8125rem;
+    color: #c9d1d9;
+    background: none;
+    border: 0;
+    padding: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .dots {
+    display: inline-flex;
+    gap: 0.35rem;
+    flex: none;
+  }
+  .dots i {
+    width: 0.6rem;
+    height: 0.6rem;
+    border-radius: 50%;
+    background: #3d444d;
+  }
+  pre {
+    margin: 0;
+    padding: 1rem;
+    overflow: auto;
+    background: var(--tw-term-bg);
+    color: var(--tw-term-fg);
+    border: 1px solid var(--tw-term-border);
+    border-radius: 0 0 0.6rem 0.6rem;
+    font-family: var(--sl-font-mono);
+    font-size: 0.8125rem;
+    line-height: 1.6;
+  }
+  pre code {
+    background: none;
+    border: 0;
+    padding: 0;
+    font-size: inherit;
+    color: inherit;
+    white-space: pre;
+  }
+  pre:focus-visible {
+    outline: 2px solid var(--sl-color-text-accent);
+    outline-offset: 2px;
+  }
+  figcaption {
+    margin-top: 0.5rem;
+    font-size: var(--sl-text-sm);
+    color: var(--sl-color-gray-3);
+  }
+</style>

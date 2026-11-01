@@ -1,0 +1,4 @@
+retriever:
+  top_k: 40
+  rerank: true
+  filters: {tenant: x}

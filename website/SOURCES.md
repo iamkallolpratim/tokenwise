@@ -1,0 +1,21 @@
+# Website sources
+
+External facts the website and its deployment rely on, where each was verified, and when. TokenWise's own product sources are on the website under Project → Sources.
+
+| Topic | Fact relied on | Source | Checked |
+|---|---|---|---|
+| Astro version | `astro@7.3.8` (published 2026-10-08); latest was 7.4.4 (2026-10-28). Pinned to a release at least two weeks old. | `npm view astro time` | 2026-10-31 |
+| Starlight version | `@astrojs/starlight@0.42.6` (2026-10-08); peer dependencies `astro ^7.2.10`, `@astrojs/markdown-remark ^7.3.0`. | `npm view @astrojs/starlight@0.42.6` | 2026-10-31 |
+| Starlight custom pages | `<StarlightPage>` from `@astrojs/starlight/components/StarlightPage.astro`; `frontmatter.title` required; `template: "splash"`; `hasSidebar`. Sub-folders of `src/content/docs/` become URL segments. | https://starlight.astro.build/guides/pages/ | 2026-10-31 |
+| Starlight config | `title`, `description`, `logo`, `social` (`{ label, icon, href }[]`), `sidebar` (slug / group / autogenerate), `customCss`, `head` (`{ tag, attrs, content }[]`), `editLink.baseUrl`, `favicon`, `components`, `disable404Route`, `pagefind`. No built-in analytics. | https://starlight.astro.build/reference/configuration/ | 2026-10-31 |
+| Starlight fonts and 404 | System font stacks by default (nothing downloaded). A custom 404 can replace the built-in one with `src/pages/404.astro` plus `disable404Route: true`. | https://starlight.astro.build/guides/customization/ | 2026-10-31 |
+| Starlight content config | `docsLoader` / `i18nLoader` from `@astrojs/starlight/loaders`, `docsSchema` / `i18nSchema` from `@astrojs/starlight/schema`. | https://starlight.astro.build/manual-setup/ and the package's type definitions | 2026-10-31 |
+| Expressive Code config | `ec.config.mjs` with `defineEcConfig` from `@astrojs/starlight/expressive-code`; plugin hook `postprocessRenderedBlock`. | Type definitions in `@astrojs/starlight` 0.42.6 / `expressive-code` 0.44.3 | 2026-10-31 |
+| Astro on GitHub Pages | `site` = `https://<owner>.github.io`, `base` = `/<repo>` for project sites; omit `base` for `<owner>.github.io` repositories and custom domains; Pages source "GitHub Actions". | https://docs.astro.build/en/guides/deploy/github/ | 2026-10-31 |
+| Pages workflow requirements | Deploy job needs `pages: write` and `id-token: write`; environment `github-pages`; artifact is a gzip'd tar under 10 GB without symlinks. | https://docs.github.com/en/pages/getting-started-with-github-pages/using-custom-workflows-with-github-pages | 2026-10-31 |
+| Pages action versions | `actions/configure-pages@v6` (v6.0.0), `actions/upload-pages-artifact@v5` (v5.0.0), `actions/deploy-pages@v5` (v5.0.1); also `actions/checkout@v7`, `actions/setup-node@v7`, `pnpm/action-setup@v6`. The GitHub docs page above still shows older majors in its snippets. | GitHub releases API (`/repos/<action>/releases/latest`) | 2026-10-31 |
+| `configure-pages` outputs | `base_url`, `origin`, `host`, `base_path` (e.g. `/my-repo` or `""`). | https://github.com/actions/configure-pages/blob/v6/action.yml | 2026-10-31 |
+| User/org vs project sites | User/org sites must live in a repository named `<owner>.github.io` (one per account) and serve at `https://<owner>.github.io`; project sites serve at `https://<owner>.github.io/<repository>`. | https://docs.github.com/en/pages/getting-started-with-github-pages/about-github-pages | 2026-10-31 |
+| Custom domains | Apex `A` records 185.199.108.153, .109.153, .110.153, .111.153; optional `AAAA` 2606:50c0:8000::153 … 8003::153; subdomains use a `CNAME` to `<owner>.github.io`. With a custom Actions workflow no `CNAME` file is needed (it is ignored). | https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site/managing-a-custom-domain-for-your-github-pages-site | 2026-10-31 |
+| Astro telemetry | Astro's CLI telemetry is opt-out ("you may opt-out at any time"); setting `ASTRO_TELEMETRY_DISABLED=1` at runtime disables all of it. The site's scripts and CI set the variable. | https://astro.build/telemetry/ | 2026-10-31 |
+| Lighthouse CI | `@lhci/cli@0.15.1` (bundles Lighthouse 12.6.1); `autorun` with `collect.startServerCommand`, `collect.url`, `assert.assertions["categories:*"]`, `upload.target: "filesystem"`. | `npm view @lhci/cli`; package README | 2026-10-31 |

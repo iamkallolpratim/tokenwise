@@ -1,0 +1,16 @@
+---
+// Own 404 page (Starlight's is disabled) so the "Docs home" link carries the base path: GitHub Pages
+// serves this file for missing URLs at any depth, where a relative link would break.
+import StarlightPage from "@astrojs/starlight/components/StarlightPage.astro";
+
+const base = import.meta.env.BASE_URL;
+---
+
+<StarlightPage frontmatter={{ title: "Page not found", description: "The page you were looking for does not exist.", template: "splash" }} hasSidebar={false}>
+  <p>The page may have moved when the documentation was reorganized. Search with the box at the top of the page, or start again from one of these:</p>
+  <ul>
+    <li><a href={`${base}docs/`}>Documentation home</a></li>
+    <li><a href={`${base}docs/getting-started/quickstart/`}>Quickstart</a></li>
+    <li><a href={base}>TokenWise home page</a></li>
+  </ul>
+</StarlightPage>
