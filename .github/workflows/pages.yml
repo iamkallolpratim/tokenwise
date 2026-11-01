@@ -4,7 +4,7 @@ name: pages
 # default branch. One-time setup: Settings → Pages → Source: "GitHub Actions" (see website/README.md).
 on:
   push:
-    branches: [main]
+    branches: [production]
   pull_request:
   workflow_dispatch:
 
