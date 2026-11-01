@@ -11,7 +11,7 @@ There is no session-start hook on purpose: adding a summary to every session wou
 
 ## Install
 
-The hook runs `npx --no-install @klawde/tokenwise hook run`, so install TokenWise in the project first (`npm install -D @klawde/tokenwise`), or pass `--command` with another launcher.
+The hook runs `npx --no-install @klawde91/tokenwise hook run`, so install TokenWise in the project first (`npm install -D @klawde91/tokenwise`), or pass `--command` with another launcher.
 
 ```bash
 tokenwise hook install --target claude --scope project           # shows the settings diff

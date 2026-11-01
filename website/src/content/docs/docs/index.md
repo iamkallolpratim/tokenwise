@@ -34,7 +34,7 @@ It runs on your machine. By default it makes no network requests and sends no te
 
 ## Commands in these docs
 
-Examples write the command as `tokenwise`. If you run it without installing, use `npx @klawde/tokenwise` in its place. See [Installation](getting-started/installation/).
+Examples write the command as `tokenwise`. If you run it without installing, use `npx @klawde91/tokenwise` in its place. See [Installation](getting-started/installation/).
 
 ## Next
 

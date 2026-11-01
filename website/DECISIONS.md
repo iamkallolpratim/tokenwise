@@ -3,10 +3,10 @@
 Decisions made while building the site where the brief left room, or where the code disagreed with it. Format: context → decision (alternatives). Product decisions are on the website under Project → Decisions.
 
 ## W1. The code wins over the brief: package name and commands
-The brief shows `npx tokenwise audit .`. The npm name `tokenwise` belongs to an unrelated package, and the CLI is published as `@klawde/tokenwise`. Every command on the site uses `npx @klawde/tokenwise …` (read from `apps/cli/package.json`), or `tokenwise …` where the page says the command is installed. The brief's `optimize --dry-run` does not exist: `optimize` is a dry run unless `--apply` is given, and the docs say so.
+The brief shows `npx tokenwise audit .`. The npm name `tokenwise` belongs to an unrelated package, and the CLI is published as `@klawde91/tokenwise`. Every command on the site uses `npx @klawde91/tokenwise …` (read from `apps/cli/package.json`), or `tokenwise …` where the page says the command is installed. The brief's `optimize --dry-run` does not exist: `optimize` is a dry run unless `--apply` is given, and the docs say so.
 
 ## W2. Pre-release honesty
-The package is not on npm yet, so `npx @klawde/tokenwise` does not work today. The landing page and the installation page say so and show how to run from source. One flag (`PUBLISHED_ON_NPM` in `src/data/release.ts`) removes those notes after the first release.
+The package is not on npm yet, so `npx @klawde91/tokenwise` does not work today. The landing page and the installation page say so and show how to run from source. One flag (`PUBLISHED_ON_NPM` in `src/data/release.ts`) removes those notes after the first release.
 
 ## W3. URL: project site by default, everything from config
 No GitHub owner or domain has been chosen. The site builds for any of the three options from `SITE_URL` and `BASE_PATH` (`site.config.mjs`); CI reads both from the repository's Pages settings via `actions/configure-pages`, so the maintainer's Pages choice is the only input. Pull requests build under `/tokenwise/` to catch base-path bugs. "View on GitHub" and edit links come from the repository the workflow runs in (`REPO_URL`) and are omitted when unknown, rather than guessed.

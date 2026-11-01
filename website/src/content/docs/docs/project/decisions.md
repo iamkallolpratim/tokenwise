@@ -99,7 +99,7 @@ Decision: `ingest` imports Claude Code transcripts and recorded Anthropic/OpenAI
 
 ## D21. Hooks are PostToolUse only, report-only, and installed explicitly
 Context: Section 13 allows optional hooks that are opt-in, read-only, time-bounded and non-blocking.
-Decision: `tokenwise hook install` (dry run unless `--apply`, with backup and `restore`) adds one PostToolUse entry (`Edit|Write` for Claude Code, `apply_patch` for Codex) that runs `npx --no-install @klawde/tokenwise hook run`. The hook audits only instruction files the tool just wrote, reports HIGH+ findings in at most 800 characters of `additionalContext`, never writes files (not even the audit cache), gives up silently after 5 s (harness timeout 10 s), and exits 0 on every error. No SessionStart hook: injecting a summary into every session would itself cost tokens. Entries are found and removed by the `tokenwise hook run` marker, so a custom `--command` must contain it.
+Decision: `tokenwise hook install` (dry run unless `--apply`, with backup and `restore`) adds one PostToolUse entry (`Edit|Write` for Claude Code, `apply_patch` for Codex) that runs `npx --no-install @klawde91/tokenwise hook run`. The hook audits only instruction files the tool just wrote, reports HIGH+ findings in at most 800 characters of `additionalContext`, never writes files (not even the audit cache), gives up silently after 5 s (harness timeout 10 s), and exits 0 on every error. No SessionStart hook: injecting a summary into every session would itself cost tokens. Entries are found and removed by the `tokenwise hook run` marker, so a custom `--command` must contain it.
 
 ## D22. Backups can record files TokenWise created
 Context: installing a hook may create `.claude/settings.json` or `.codex/hooks.json`.

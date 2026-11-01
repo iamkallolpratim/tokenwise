@@ -49,7 +49,7 @@ export function registerHook(program: Command): void {
     .option("--remove", "remove TokenWise's hook entry instead of adding it")
     .option(
       "--command <cmd>",
-      "command the hook runs (default: npx --no-install @klawde/tokenwise hook run ...)",
+      "command the hook runs (default: npx --no-install @klawde91/tokenwise hook run ...)",
     )
     .option("--apply", "write the settings file (with backup)")
     .option("--format <format>", "text or json", "text")
@@ -208,7 +208,7 @@ async function runHook(min: Severity, fallbackCwd: string): Promise<object | nul
         `- ${f.severity} ${f.ruleId} ${f.file}${f.range ? `:${f.range.startLine}` : ""}: ${f.description}`,
     );
   const more = findings.length > 3 ? `\n- …and ${findings.length - 3} more` : "";
-  let text = `TokenWise (read-only check): ${findings.length} token-efficiency finding(s) at ${min} or above in ${files.join(", ")}:\n${lines.join("\n")}${more}\nDetails: npx @klawde/tokenwise audit ${files[0]}`;
+  let text = `TokenWise (read-only check): ${findings.length} token-efficiency finding(s) at ${min} or above in ${files.join(", ")}:\n${lines.join("\n")}${more}\nDetails: npx @klawde91/tokenwise audit ${files[0]}`;
   text = redact(text);
   if (text.length > MAX_CONTEXT_CHARS) text = `${text.slice(0, MAX_CONTEXT_CHARS - 1)}…`;
   return { hookSpecificOutput: { hookEventName: "PostToolUse", additionalContext: text } };

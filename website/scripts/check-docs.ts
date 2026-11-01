@@ -56,7 +56,7 @@ const docSources = [
 ];
 
 const COMMAND =
-  /(?:npx (?:--no-install )?@klawde\/tokenwise|(?<![\w.@/-])tokenwise)[ \t]+([a-z][a-z-]*)([^\n`|#;)]*)/g;
+  /(?:npx (?:--no-install )?@klawde91\/tokenwise|(?<![\w.@/-])tokenwise)[ \t]+([a-z][a-z-]*)([^\n`|#;)]*)/g;
 let commandsChecked = 0;
 for (const file of docSources) {
   const text = readFileSync(file, "utf8");

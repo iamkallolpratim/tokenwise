@@ -7,7 +7,7 @@ After this page you will know what is planned. Nothing on this page exists in th
 
 ## Planned
 
-- **First npm release** of `@klawde/tokenwise`. Until then, [run from source](../getting-started/installation/#from-source).
+- **First npm release** of `@klawde91/tokenwise`. Until then, [run from source](../getting-started/installation/#from-source).
 - **Windows verification.** The CI matrix includes Windows; it has not run yet.
 - **More harness formats** in discovery and rules: Cursor rules, GitHub Copilot instructions and similar files.
 

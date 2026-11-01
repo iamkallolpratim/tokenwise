@@ -42,9 +42,9 @@ jobs:
       - uses: actions/setup-node@v7
         with:
           node-version: 26
-      - run: npx @klawde/tokenwise audit --fail-on high --model gpt-5
+      - run: npx @klawde91/tokenwise audit --fail-on high --model gpt-5
       - if: always()
-        run: npx @klawde/tokenwise report --format markdown --out tokenwise-report.md
+        run: npx @klawde91/tokenwise report --format markdown --out tokenwise-report.md
       - if: always()
         uses: actions/upload-artifact@v4
         with:

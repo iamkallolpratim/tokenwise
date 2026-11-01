@@ -9,10 +9,10 @@ TokenWise is a local-first CLI that finds unnecessary LLM token usage in the fil
 Requires Node.js 26 or newer. No API key, no account.
 
 ```bash
-npx @klawde/tokenwise --help
+npx @klawde91/tokenwise --help
 ```
 
-`@klawde/tokenwise` is not published to npm yet. Until the first release, run it from source:
+`@klawde91/tokenwise` is not published to npm yet. Until the first release, run it from source:
 
 ```bash
 pnpm install && pnpm build
@@ -22,11 +22,11 @@ node apps/cli/dist/index.js --help
 ## Quickstart
 
 ```bash
-npx @klawde/tokenwise init                  # writes tokenwise.config.json, lists the agent files it found
-npx @klawde/tokenwise audit --model gpt-5   # findings with risk and estimated savings
-npx @klawde/tokenwise optimize              # dry run: shows the diff, writes nothing
-npx @klawde/tokenwise optimize --apply      # applies it, backing up to .tokenwise/backups/
-npx @klawde/tokenwise restore --list        # undo any change
+npx @klawde91/tokenwise init                  # writes tokenwise.config.json, lists the agent files it found
+npx @klawde91/tokenwise audit --model gpt-5   # findings with risk and estimated savings
+npx @klawde91/tokenwise optimize              # dry run: shows the diff, writes nothing
+npx @klawde91/tokenwise optimize --apply      # applies it, backing up to .tokenwise/backups/
+npx @klawde91/tokenwise restore --list        # undo any change
 ```
 
 ## Documentation

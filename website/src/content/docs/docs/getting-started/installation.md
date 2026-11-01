@@ -16,14 +16,14 @@ TokenWise 0.1.0 is not published to npm yet, so the `npx` and `npm install` comm
 Runs the latest version without installing anything:
 
 ```bash
-npx @klawde/tokenwise --help
-npx @klawde/tokenwise audit .
+npx @klawde91/tokenwise --help
+npx @klawde91/tokenwise audit .
 ```
 
 ## As a global command
 
 ```bash
-npm install -g @klawde/tokenwise
+npm install -g @klawde91/tokenwise
 tokenwise --version
 ```
 
@@ -32,7 +32,7 @@ tokenwise --version
 Needed if you use the [optional hook](../../agent-skills/hooks/), which runs `npx --no-install` and so only finds a local install:
 
 ```bash
-npm install -D @klawde/tokenwise
+npm install -D @klawde91/tokenwise
 ```
 
 ## From source
@@ -52,7 +52,7 @@ To get a `tokenwise` command from your checkout, pack it and install the tarball
 ```bash
 cd apps/cli
 pnpm pack
-npm install -g ./klawde-tokenwise-0.1.0.tgz
+npm install -g ./klawde91-tokenwise-0.1.0.tgz
 tokenwise --version
 ```
 

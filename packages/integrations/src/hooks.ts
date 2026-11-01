@@ -21,7 +21,7 @@ export const HOOK_TIMEOUT_SECONDS = 10;
 const MATCHER: Record<HookTarget, string> = { claude: "Edit|Write", codex: "apply_patch" };
 
 export function defaultHookCommand(target: HookTarget): string {
-  return `npx --no-install @klawde/tokenwise hook run --target ${target}`;
+  return `npx --no-install @klawde91/tokenwise hook run --target ${target}`;
 }
 
 export function hookFile(target: HookTarget, scope: HookScope, projectRoot: string, home: string): string {

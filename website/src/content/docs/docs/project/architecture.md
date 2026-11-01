@@ -16,7 +16,7 @@ packages/integrations  Claude Code / Codex skill targets, frontmatter validation
 skills/             _shared/references (source of truth) → generated references/ in each skill
 ```
 
-The published `@klawde/tokenwise` package bundles the internal packages with tsup; third-party runtime dependencies (commander, zod, picocolors, fast-glob, ignore, diff, yaml, gpt-tokenizer) stay external. No native modules.
+The published `@klawde91/tokenwise` package bundles the internal packages with tsup; third-party runtime dependencies (commander, zod, picocolors, fast-glob, ignore, diff, yaml, gpt-tokenizer) stay external. No native modules.
 
 ## Data flow
 

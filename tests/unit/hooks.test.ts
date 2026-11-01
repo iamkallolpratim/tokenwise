@@ -44,7 +44,7 @@ describe("planHook", () => {
       hooks: [
         {
           type: "command",
-          command: "npx --no-install @klawde/tokenwise hook run --target claude",
+          command: "npx --no-install @klawde91/tokenwise hook run --target claude",
           timeout: 10,
         },
       ],

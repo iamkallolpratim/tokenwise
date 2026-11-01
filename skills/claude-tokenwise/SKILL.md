@@ -9,17 +9,17 @@ All analysis comes from the `tokenwise` CLI. Do not reimplement its rules from t
 
 ## 1. Check the CLI
 
-Run `npx @klawde/tokenwise --version`. If it fails, tell the user TokenWise needs Node.js 26+ and runs with `npx @klawde/tokenwise` (no API keys), then stop.
+Run `npx @klawde91/tokenwise --version`. If it fails, tell the user TokenWise needs Node.js 26+ and runs with `npx @klawde91/tokenwise` (no API keys), then stop.
 
 ## 2. Workflow
 
-1. **Audit**: `npx @klawde/tokenwise audit . --format json`. Add `--model <id>` when the user names a model; without one, counts are `estimated`.
+1. **Audit**: `npx @klawde91/tokenwise audit . --format json`. Add `--model <id>` when the user names a model; without one, counts are `estimated`.
 2. **Explain** the top findings, CRITICAL and HIGH first: location, cost (`estimatedSavings.tokens` with its `basis`), and `risk`.
-3. **Propose** changes as a diff. `npx @klawde/tokenwise optimize . --format json` returns protection-checked diffs for auto-fixable findings. For other findings, draft the edit yourself and show the diff.
-4. **Apply only after the user approves**: `npx @klawde/tokenwise optimize . --apply`, or your own edit that keeps every protected statement.
-5. **Verify**: re-run the audit and report the token change with its method. Say "Quality: not verified" unless an evaluation ran (`npx @klawde/tokenwise benchmark --eval .tokenwise/evals`).
+3. **Propose** changes as a diff. `npx @klawde91/tokenwise optimize . --format json` returns protection-checked diffs for auto-fixable findings. For other findings, draft the edit yourself and show the diff.
+4. **Apply only after the user approves**: `npx @klawde91/tokenwise optimize . --apply`, or your own edit that keeps every protected statement.
+5. **Verify**: re-run the audit and report the token change with its method. Say "Quality: not verified" unless an evaluation ran (`npx @klawde91/tokenwise benchmark --eval .tokenwise/evals`).
 
-Undo with `npx @klawde/tokenwise restore --list` and `npx @klawde/tokenwise restore <id>`.
+Undo with `npx @klawde91/tokenwise restore --list` and `npx @klawde91/tokenwise restore <id>`.
 
 ## 3. Claude Code specifics
 

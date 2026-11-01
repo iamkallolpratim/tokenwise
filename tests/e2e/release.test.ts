@@ -17,7 +17,7 @@ describe("release preparation", () => {
 
   it("package metadata is ready for npm without publishing", () => {
     const pkg = JSON.parse(readFileSync(path.join(REPO_ROOT, "apps", "cli", "package.json"), "utf8"));
-    expect(pkg.name).toBe("@klawde/tokenwise");
+    expect(pkg.name).toBe("@klawde91/tokenwise");
     // npm provenance requires repository.url to match the GitHub repository that publishes.
     expect(pkg.repository.url).toBe("git+https://github.com/iamkallolpratim/tokenwise.git");
     expect(pkg.homepage).toMatch(/^https:\/\/.+\/$/);

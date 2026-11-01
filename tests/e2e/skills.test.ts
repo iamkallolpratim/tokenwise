@@ -41,7 +41,7 @@ describe("skill packaging", () => {
   it("skills delegate to the CLI rather than reimplementing rules", () => {
     for (const t of ["claude", "codex"] as const) {
       const text = readFileSync(path.join(SKILLS, TARGETS[t].sourceDir, "SKILL.md"), "utf8");
-      expect(text).toMatch(/npx @klawde\/tokenwise audit \. --format json/);
+      expect(text).toMatch(/npx @klawde91\/tokenwise audit \. --format json/);
       expect(text).toMatch(/Apply only after the user approves/);
       expect(text.split("\n").length).toBeLessThan(80);
     }
