@@ -69,7 +69,7 @@ These are repository settings; the workflow cannot change them.
    - for a subdomain (`docs.example.com`): a `CNAME` record to `<owner>.github.io`.
 
    Then enable "Enforce HTTPS". The next deploy picks up the new origin from `actions/configure-pages`. Verifying the domain for your account or organization (Settings → Pages → Verified domains) protects it from takeover.
-4. Once the site URL is known, set `"homepage"` in `apps/cli/package.json` to it (e.g. `https://<owner>.github.io/tokenwise/`). The CLI then prints a link to each rule's documentation in `tokenwise audit` output.
+4. Keep `"homepage"` in `apps/cli/package.json` equal to the site URL (now `https://iamkallolpratim.github.io/tokenwise/`). The CLI bakes it in at build time and prints a link to each rule's documentation in `tokenwise audit` output; change it if the site moves (for example to a custom domain).
 
 ## Privacy
 

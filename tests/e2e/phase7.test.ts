@@ -165,10 +165,15 @@ describe("rule documentation links", () => {
       );
   });
 
-  it("prints no link when no docs URL is configured", () => {
+  it("defaults to the package homepage, and an empty TOKENWISE_DOCS_URL turns links off", () => {
     const dir = sampleCopy();
-    expect(run(["audit"], { cwd: dir }).stdout).not.toContain("docs:     ");
-    const json = JSON.parse(run(["audit", "--format", "json"], { cwd: dir }).stdout);
+    const home = JSON.parse(
+      readFileSync(path.join(REPO_ROOT, "apps", "cli", "package.json"), "utf8"),
+    ).homepage;
+    expect(run(["audit"], { cwd: dir }).stdout).toContain(`docs:     ${home}docs/reference/rules/#`);
+    const off = { TOKENWISE_DOCS_URL: "" };
+    expect(run(["audit"], { cwd: dir, env: off }).stdout).not.toContain("docs:     ");
+    const json = JSON.parse(run(["audit", "--format", "json"], { cwd: dir, env: off }).stdout);
     expect(json.findings[0].docsUrl).toBeUndefined();
   });
 });

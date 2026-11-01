@@ -3,6 +3,15 @@
   "version": "0.1.0",
   "description": "Find and reduce unnecessary LLM token usage in prompts, agent instructions, skills, and tool schemas \u2014 without degrading behavior.",
   "license": "MIT",
+  "homepage": "https://iamkallolpratim.github.io/tokenwise/",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/iamkallolpratim/tokenwise.git",
+    "directory": "apps/cli"
+  },
+  "bugs": {
+    "url": "https://github.com/iamkallolpratim/tokenwise/issues"
+  },
   "type": "module",
   "bin": {
     "tokenwise": "./dist/index.js"

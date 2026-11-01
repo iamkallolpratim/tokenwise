@@ -36,7 +36,7 @@ tokenwise config set thresholds.rootInstructionTokens 3000
 | `TOKENWISE_MODEL` | Same as `defaultModel`. |
 | `TOKENWISE_MAX_FILE_SIZE` | Same as `maxFileSizeBytes`. |
 | `TOKENWISE_USER_CONFIG` | Path of the user config file. |
-| `TOKENWISE_DOCS_URL` | Base URL used for rule links in `audit` output (defaults to the package's homepage). |
+| `TOKENWISE_DOCS_URL` | Base URL for the rule links in `audit` output. Defaults to the package's homepage; set it to an empty string to print no links. |
 | `NO_COLOR` / `FORCE_COLOR` | Disable or force colored output. |
 | `ANTHROPIC_API_KEY`, `OPENAI_API_KEY` | Read only by features that call a provider, after consent. Never written to config. |
 

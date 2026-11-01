@@ -31,8 +31,8 @@ npx @klawde/tokenwise restore --list        # undo any change
 
 ## Documentation
 
-All documentation is on the TokenWise website, built from [`website/`](website/) and published to GitHub Pages. Start with the [introduction](website/src/content/docs/docs/index.md) or the [quickstart](website/src/content/docs/docs/getting-started/quickstart.md). To work on the code, see [CONTRIBUTING.md](CONTRIBUTING.md).
+All documentation is on the TokenWise website: **https://iamkallolpratim.github.io/tokenwise/**. Start with the [introduction](https://iamkallolpratim.github.io/tokenwise/docs/) or the [quickstart](https://iamkallolpratim.github.io/tokenwise/docs/getting-started/quickstart/). The site is built from [`website/`](https://github.com/iamkallolpratim/tokenwise/tree/production/website). To work on the code, see [CONTRIBUTING.md](https://github.com/iamkallolpratim/tokenwise/blob/production/CONTRIBUTING.md).
 
 ## License
 
-[MIT](LICENSE)
+[MIT](https://github.com/iamkallolpratim/tokenwise/blob/production/LICENSE)
